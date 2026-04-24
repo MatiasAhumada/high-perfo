@@ -1,15 +1,215 @@
+// Configuración del Generador y Datasource
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- SISTEMA DE PLANES Y REVENTA (SaaS) ---
+
+model Plan {
+  id                String    @id @default(uuid())
+  name              String    // Ej: "Plan Club Pro", "Coach Solitario", "Elite"
+  
+  // Límites del Plan (Control de Quotas)
+  maxCoaches        Int       @default(1)   // Máximo de usuarios staff permitidos
+  maxAthletes       Int       @default(10)  // Máximo de deportistas en la cuenta
+  maxAssessments    Int       @default(100) // Bolsa total de evaluaciones para toda la cuenta
+  
+  price             Float?    // Referencia de costo interno
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  accounts          Account[]
+}
+
+model Account {
+  id                String    @id @default(uuid())
+  name              String    // Nombre del Club o del Coach independiente
+  isOrganization    Boolean   @default(true) // true: Club/Empresa, false: Persona sola
+  
+  // Relación con el Plan de suscripción
+  planId            String
+  plan              Plan      @relation(fields: [planId], references: [id])
+  
+  // Relaciones Core
+  users             User[]
+  athletes          Athlete[]
+  templates         RoutineTemplate[]
+  designConfig      DesignConfig? // Configuración de marca de Stitch
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// --- USUARIOS Y ROLES ---
+
+enum Role {
+  SUPER_ADMIN  // Dios del sistema: gestiona planes, cuentas y tiene acceso total.
+  ORG_ADMIN    // El dueño de la Account (quien paga/administra el club).
+  COACH        // Entrenador operativo (limitado por maxCoaches).
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  name              String
+  role              Role      @default(COACH)
+  
+  // Pertenencia a la Cuenta
+  accountId         String
+  account           Account   @relation(fields: [accountId], references: [id])
+  
+  // Trazabilidad de acciones
+  createdTemplates  RoutineTemplate[]
+  assessmentsPerformed Assessment[]
+  assignedRoutines   AssignedRoutine[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// --- CONFIGURACIÓN VISUAL (Tokens de Diseño) ---
+
+model DesignConfig {
+  id                String    @id @default(uuid())
+  accountId         String    @unique
+  account           Account   @relation(fields: [accountId], references: [id])
+  
+  // Tokens de colores basados en tu diseño Stitch
+  primaryColor      String    @default("#ef233c") // Punch Red
+  surfaceColor      String    @default("#101417") // Space Indigo 200
+  surfaceVariant    String    @default("#1d2023") // Surface Container
+  textColor         String    @default("#e0e2e6") // Platinum / On-Surface
+  
+  // Tipografía y Formas
+  fontFamilyHead    String    @default("Space Grotesk")
+  fontFamilyBody    String    @default("Manrope")
+  borderRadius      String    @default("0.25rem") // Nivel 1 (Soft)
+  
+  updatedAt         DateTime  @updatedAt
+}
+
+// --- GESTIÓN DE DEPORTISTAS ---
+
+model Athlete {
+  id                String    @id @default(uuid())
+  firstName         String
+  lastName          String
+  puesto            String?   // Ej: "9" (Medio Scrum)
+  birthDate         DateTime?
+  
+  // Pertenencia a la Cuenta
+  accountId         String
+  account           Account   @relation(fields: [accountId], references: [id])
+  
+  // Relaciones de datos
+  assessments       Assessment[]
+  assignedRoutines  AssignedRoutine[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// --- EVALUACIONES E HISTÓRICO ---
+
+model Assessment {
+  id                String    @id @default(uuid())
+  athleteId         String
+  athlete           Athlete   @relation(fields: [athleteId], references: [id])
+  
+  coachId           String    // Coach que realizó la evaluación
+  coach             User      @relation(fields: [coachId], references: [id])
+  
+  date              DateTime  @default(now())
+  type              String    // Ej: "Neuromuscular", "Antropometría"
+  bodyWeight        Float?    // Peso corporal al momento del test (clave para cálculos)
+  
+  results           MetricResult[]
+}
+
+model MetricResult {
+  id                String     @id @default(uuid())
+  assessmentId      String
+  assessment        Assessment @relation(fields: [assessmentId], references: [id])
+  
+  key               String     // Clave de métrica (ej: "SJ", "CMJ", "1RM_BENCH")
+  rawValue          Float      // Valor bruto (dato ingresado)
+  calculatedValue   Float?     // Resultado de fórmula (ej: Índice elástico)
+}
+
+// --- PLANIFICACIÓN Y ENTRENAMIENTO ---
+
+model RoutineTemplate {
+  id                String    @id @default(uuid())
+  name              String    // Ej: "Pre-Temporada Bloque A"
+  description       String?
+  
+  accountId         String
+  account           Account   @relation(fields: [accountId], references: [id])
+  
+  creatorId         String
+  creator           User      @relation(fields: [creatorId], references: [id])
+  
+  exercises         TemplateExercise[]
+}
+
+model TemplateExercise {
+  id                String          @id @default(uuid())
+  templateId        String
+  template          RoutineTemplate @relation(fields: [templateId], references: [id])
+  
+  name              String          // Nombre del ejercicio
+  order             Int
+  sets              Int
+  reps              Int
+  intensityPercent  Float?          // % del RM teórico sugerido
+}
+
+model AssignedRoutine {
+  id                String    @id @default(uuid())
+  athleteId         String
+  athlete           Athlete   @relation(fields: [athleteId], references: [id])
+  
+  coachId           String
+  coach             User      @relation(fields: [coachId], references: [id])
+  
+  startDate         DateTime
+  endDate           DateTime?
+  status            String    @default("ACTIVE") // ACTIVE, COMPLETED, ARCHIVED
+  
+  toolExecutions    ToolExecution[]
+}
+
+// --- CAJA DE HERRAMIENTAS (ADICIONALES SIEMPRE PRESENTES) ---
+
+model ToolExecution {
+  id                String          @id @default(uuid())
+  assignedRoutineId String
+  routine           AssignedRoutine @relation(fields: [assignedRoutineId], references: [id])
+  
+  toolKey           String          // Ej: "TEJIDO_BLANDO", "CLIMA", "TRINEO"
+  completed         Boolean         @default(false)
+  data              Json?           // Datos variables del día (ej: "30 seg", "5 metros")
+  
+  updatedAt         DateTime  @updatedAt
+}
+
+// Catálogo de definiciones de métricas por Organización (Semáforos)
+model MetricDefinition {
+  id                String       @id @default(uuid())
+  accountId         String
+  account           Account      @relation(fields: [accountId], references: [id])
+  
+  key               String       // Debe coincidir con MetricResult.key
+  label             String       // Nombre amigable (ej: "Salto Squat")
+  unit              String       // kg, cm, m/s
+  
+  // Umbrales para alertas visuales (Rojo/Verde/Amarillo)
+  redZoneLimit      Float?       
+  greenZoneLimit    Float?
 }
