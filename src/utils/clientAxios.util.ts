@@ -6,6 +6,7 @@ const clientAxios = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 clientAxios.interceptors.request.use(
@@ -22,6 +23,11 @@ clientAxios.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+    }
     return Promise.reject(error);
   }
 );

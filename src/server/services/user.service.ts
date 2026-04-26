@@ -1,64 +1,100 @@
-import { userRepository } from "@/server/repository/user.repository";
-import { ApiError } from "@/utils/handlers/apiError.handler";
-import httpStatus from "http-status";
+import { userRepository } from "@/server/repository/user.repository"
+import { accountRepository } from "@/server/repository/account.repository"
+import { ApiError } from "@/utils/handlers/apiError.handler"
+import { CreateUserDto, UpdateUserDto } from "@/types/user.types"
+import { ERROR_MESSAGES } from "@/constants/error-messages.constant"
+import { requireAccountAccess } from "@/lib/permissions"
+import { ROLES } from "@/constants/roles.constant"
+import { Role } from "@prisma/client"
+import httpStatus from "http-status"
+import bcrypt from "bcryptjs"
+import { AUTH_LIMITS } from "@/constants/api-limits.constant"
 
-interface CreateUserDto {
-  name: string;
-  email: string;
+type SessionUser = {
+  id: string
+  email: string
+  name: string
+  role: Role
+  accountId: string
 }
-
-interface UpdateUserDto extends Partial<CreateUserDto> {}
 
 export const userService = {
   async create(dto: CreateUserDto) {
-    const existingUser = await userRepository.findByEmail(dto.email);
-
+    const existingUser = await userRepository.findByEmail(dto.email)
     if (existingUser) {
       throw new ApiError({
         status: httpStatus.CONFLICT,
-        message: "El email ya está registrado",
-      });
+        message: ERROR_MESSAGES.DUPLICATE_EMAIL,
+      })
     }
-
-    return userRepository.create(dto);
+    return userRepository.create(dto)
   },
 
   async findById(id: string) {
-    const user = await userRepository.findById(id);
-
+    const user = await userRepository.findById(id)
     if (!user) {
       throw new ApiError({
         status: httpStatus.NOT_FOUND,
-        message: "Usuario no encontrado",
-      });
+        message: ERROR_MESSAGES.USER_NOT_FOUND,
+      })
     }
-
-    return user;
+    return user
   },
 
   async update(id: string, dto: UpdateUserDto) {
-    await this.findById(id);
-
+    await this.findById(id)
     if (dto.email) {
-      const existingUser = await userRepository.findByEmail(dto.email);
-
+      const existingUser = await userRepository.findByEmail(dto.email)
       if (existingUser && existingUser.id !== id) {
         throw new ApiError({
           status: httpStatus.CONFLICT,
-          message: "El email ya está registrado",
-        });
+          message: ERROR_MESSAGES.DUPLICATE_EMAIL,
+        })
       }
     }
-
-    return userRepository.update(id, dto);
+    return userRepository.update(id, dto)
   },
 
   async delete(id: string) {
-    await this.findById(id);
-    return userRepository.delete(id);
+    await this.findById(id)
+    return userRepository.delete(id)
   },
 
-  async findAll(search?: string) {
-    return userRepository.findAll(search);
+  async findAll(accountId: string, user: SessionUser, search?: string) {
+    requireAccountAccess(user, accountId)
+    return userRepository.findAll(accountId, search)
   },
-};
+
+  async createCoach(dto: { email: string; name: string; password: string }, accountId: string, user: SessionUser) {
+    requireAccountAccess(user, accountId)
+    const account = await accountRepository.findByIdWithPlan(accountId)
+    if (!account) {
+      throw new ApiError({
+        status: httpStatus.NOT_FOUND,
+        message: ERROR_MESSAGES.ACCOUNT_NOT_FOUND,
+      })
+    }
+    const currentCoachCount = await accountRepository.countCoaches(accountId)
+    if (currentCoachCount >= account.plan.maxCoaches) {
+      throw new ApiError({
+        status: httpStatus.FORBIDDEN,
+        message: ERROR_MESSAGES.COACH_LIMIT_REACHED,
+      })
+    }
+    const existingUser = await userRepository.findByEmail(dto.email)
+    if (existingUser) {
+      throw new ApiError({
+        status: httpStatus.CONFLICT,
+        message: ERROR_MESSAGES.DUPLICATE_EMAIL,
+      })
+    }
+    const hashedPassword = await bcrypt.hash(dto.password, AUTH_LIMITS.SALT_ROUNDS)
+    return userRepository.create({
+      email: dto.email,
+      name: dto.name,
+      password: hashedPassword,
+      role: "COACH" as Role,
+      accountId,
+    })
+  },
+}
