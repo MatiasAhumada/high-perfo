@@ -60,14 +60,19 @@ export const userService = {
     return userRepository.delete(id);
   },
 
-  async findAll(accountId: string, user: SessionUser, search?: string) {
-    requireAccountAccess(user, accountId);
-    return userRepository.findAll(accountId, search);
+  async updateActiveStatus(id: string, isActive: boolean) {
+    await this.findById(id);
+    return userRepository.updateActiveStatus(id, isActive);
   },
 
-  async findAllGlobal(user: SessionUser) {
+  async findAll(accountId: string, user: SessionUser, search?: string, isActive?: boolean) {
+    requireAccountAccess(user, accountId);
+    return userRepository.findAll(accountId, search, isActive);
+  },
+
+  async findAllGlobal(user: SessionUser, search?: string, isActive?: boolean) {
     requireSuperAdmin(user);
-    return userRepository.findAllGlobal();
+    return userRepository.findAllGlobal(search, isActive);
   },
 
   async createCoach(dto: { email: string; name: string; password: string }, accountId: string, user: SessionUser) {

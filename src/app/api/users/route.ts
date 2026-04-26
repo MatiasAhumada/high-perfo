@@ -12,17 +12,19 @@ export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();
     const isGlobal = request.nextUrl.searchParams.get("global") === "true";
+    const search = request.nextUrl.searchParams.get("search") ?? undefined;
+    const isActiveParam = request.nextUrl.searchParams.get("isActive");
+    const isActive = isActiveParam === "true" ? true : isActiveParam === "false" ? false : undefined;
 
     if (isGlobal && user.role === ROLES.SUPER_ADMIN) {
-      const users = await userService.findAllGlobal(user);
+      const users = await userService.findAllGlobal(user, search, isActive);
       return Response.json(users);
     }
 
     const accountId = request.nextUrl.searchParams.get("accountId") ?? user.accountId;
     requireAccountAccess(user, accountId);
     requireRole(user, ROLES.SUPER_ADMIN, ROLES.ORG_ADMIN);
-    const search = request.nextUrl.searchParams.get("search") ?? undefined;
-    const users = await userService.findAll(accountId, user, search);
+    const users = await userService.findAll(accountId, user, search, isActive);
     return Response.json(users);
   } catch (error) {
     return apiErrorHandler({

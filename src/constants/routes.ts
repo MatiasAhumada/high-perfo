@@ -5,6 +5,7 @@ export const ROUTES = {
   ROUTINES: "/rutinas",
   TOOLS: "/herramientas",
   SETTINGS: "/ajustes",
+  USUARIOS: "/usuarios",
 } as const;
 
 export const SIDEBAR_ITEMS = [
@@ -13,6 +14,7 @@ export const SIDEBAR_ITEMS = [
   { key: "routines", label: "Rutinas", path: "/rutinas", icon: "FitnessIcon" },
   { key: "tools", label: "Herramientas", path: "/herramientas", icon: "ToolboxIcon" },
   { key: "settings", label: "Ajustes", path: "/ajustes", icon: "SettingsIcon" },
+  { key: "usuarios", label: "Entrenadores", path: "/usuarios", icon: "UserGroupIcon" },
 ] as const;
 
 export const SIDEBAR_ITEMS_ADMIN = [

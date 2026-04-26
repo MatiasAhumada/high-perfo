@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { CreateUserDto, UpdateUserDto } from "@/types/user.types";
 
-const USER_SELECT = {
+const USER_SELECT_BASE = {
   id: true,
   email: true,
   name: true,
@@ -10,7 +10,7 @@ const USER_SELECT = {
   accountId: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Prisma.UserSelect;
+};
 
 export const userRepository = {
   async create(dto: CreateUserDto) {
@@ -52,39 +52,53 @@ export const userRepository = {
     });
   },
 
-  async findAll(accountId: string, search?: string) {
-    const where: Record<string, unknown> = {
-      accountId,
-      deletedAt: null,
-    };
-    if (search) {
-      where.OR = [
-        { name: { contains: search, mode: "insensitive" } },
-        { email: { contains: search, mode: "insensitive" } },
-      ];
-    }
-    return prisma.user.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      select: USER_SELECT,
+  async updateActiveStatus(id: string, isActive: boolean) {
+    return prisma.user.update({
+      where: { id },
+      data: { isActive },
     });
   },
 
-  async findAllGlobal(search?: string) {
+  async findAll(accountId: string, search?: string, isActive?: boolean) {
     const where: Record<string, unknown> = {
-      deletedAt: null,
+      accountId,
     };
+
+    if (isActive !== undefined) {
+      where.isActive = isActive;
+    }
+
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
         { email: { contains: search, mode: "insensitive" } },
       ];
     }
+
     return prisma.user.findMany({
       where,
       orderBy: { createdAt: "desc" },
-      select: {
-        ...USER_SELECT,
+    });
+  },
+
+  async findAllGlobal(search?: string, isActive?: boolean) {
+    const where: Record<string, unknown> = {};
+
+    if (isActive !== undefined) {
+      where.isActive = isActive;
+    }
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } },
+      ];
+    }
+
+    return prisma.user.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      include: {
         account: {
           select: {
             id: true,
@@ -98,7 +112,7 @@ export const userRepository = {
 
   async countByAccount(accountId: string) {
     return prisma.user.count({
-      where: { accountId, deletedAt: null },
+      where: { accountId },
     });
   },
 };

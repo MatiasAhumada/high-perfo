@@ -29,6 +29,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: 
   FitnessIcon: GymnasticIcon,
   ToolboxIcon: ToolsIcon,
   SettingsIcon: Setting06Icon,
+  UserGroupIcon: UserGroupIcon,
 };
 
 function SidebarItem({

@@ -71,6 +71,7 @@ model User {
   password String
   name     String
   role     Role   @default(COACH)
+  isActive Boolean @default(true)
 
   accountId String
   account   Account @relation(fields: [accountId], references: [id])

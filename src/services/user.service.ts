@@ -1,31 +1,46 @@
-import clientAxios from "@/utils/clientAxios.util";
+import axios from "axios";
 import { API_ROUTES } from "@/constants/routes";
-import type { CreateUserDto, UpdateUserDto } from "@/types/user.types";
 
-export const userService = {
-  async create(dto: CreateUserDto) {
-    const { data } = await clientAxios.post(API_ROUTES.USERS, dto);
+export const userClient = {
+  async getAll(accountId?: string) {
+    const params = accountId ? `?accountId=${accountId}` : "";
+    const { data } = await axios.get(`${API_ROUTES.USERS}${params}`);
     return data;
   },
 
-  async update(id: string, dto: UpdateUserDto) {
-    const { data } = await clientAxios.put(`${API_ROUTES.USERS}/${id}`, dto);
+  async getGlobal() {
+    const { data } = await axios.get(`${API_ROUTES.USERS}?global=true`);
     return data;
   },
 
-  async delete(id: string) {
-    const { data } = await clientAxios.delete(`${API_ROUTES.USERS}/${id}`);
+  async create(
+    payload: {
+      email: string;
+      name: string;
+      password: string;
+      role?: "ORG_ADMIN" | "COACH";
+    },
+    accountId: string
+  ) {
+    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
     return data;
   },
 
-  async findById(id: string) {
-    const { data } = await clientAxios.get(`${API_ROUTES.USERS}/${id}`);
+  async createWithRole(
+    payload: {
+      email: string;
+      name: string;
+      password: string;
+      role: "ORG_ADMIN" | "COACH";
+    },
+    accountId: string
+  ) {
+    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
     return data;
   },
 
-  async findAll(search?: string) {
-    const params = search ? { search } : {};
-    const { data } = await clientAxios.get(API_ROUTES.USERS, { params });
+  async updateStatus(userId: string, isActive: boolean) {
+    const { data } = await axios.patch(`${API_ROUTES.USERS}/${userId}`, { isActive });
     return data;
   },
 };
