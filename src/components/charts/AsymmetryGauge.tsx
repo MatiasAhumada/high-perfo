@@ -17,16 +17,16 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
   const isAlert = asiIndex > threshold;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       <div className="flex items-center justify-between">
-        <span className="text-label-caps text-on-surface-variant/50 uppercase tracking-wider">
+        <span className="text-[10px] sm:text-xs text-on-surface-variant/50 uppercase tracking-wider">
           {UI_TEXTS.METRICS.ASI}
         </span>
         {isAlert && (
           <motion.span
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container/40 border border-on-tertiary-container/30 text-on-tertiary-container text-label-caps uppercase tracking-wider font-semibold"
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container/40 border border-on-tertiary-container/30 text-[10px] sm:text-xs text-on-tertiary-container uppercase tracking-wider font-semibold"
           >
             &gt;{threshold}%
           </motion.span>
@@ -38,15 +38,15 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
-          "text-display-lg font-display leading-none tracking-tight",
+          "text-3xl sm:text-4xl font-display leading-none tracking-tight",
           isAlert ? "text-on-tertiary-container" : "text-on-surface"
         )}
       >
         {asiIndex.toFixed(1)}
-        <span className="text-data-mono font-data text-on-surface-variant/60 ml-1">%</span>
+        <span className="text-sm sm:text-base text-on-surface-variant/60 ml-1">%</span>
       </motion.div>
 
-      <div className="relative w-full h-3 bg-surface-container-low rounded-full overflow-hidden border border-outline-variant/10">
+      <div className="relative w-full h-2.5 sm:h-3 bg-surface-container-low rounded-full overflow-hidden border border-outline-variant/10">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${Math.min(asiIndex, 100)}%` }}
@@ -66,17 +66,17 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
         {data.map((item) => (
           <div key={item.side} className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-data-mono font-data text-on-surface-variant/70 text-sm">{item.side}</span>
+              <span className="text-xs sm:text-sm text-on-surface-variant/70">{item.side}</span>
               <span
                 className={cn(
-                  "text-data-mono font-data text-sm",
+                  "text-xs sm:text-sm font-body",
                   isAlert && item.value > 55 ? "text-on-tertiary-container" : "text-on-surface"
                 )}
               >
                 {item.value.toFixed(1)}%
               </span>
             </div>
-            <div className="w-full h-2 bg-surface-container-low rounded-full overflow-hidden">
+            <div className="w-full h-1.5 sm:h-2 bg-surface-container-low rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${item.value}%` }}

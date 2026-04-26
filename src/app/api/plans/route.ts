@@ -2,7 +2,7 @@ import { NextRequest } from "next/server"
 import { requireAuth, requireSuperAdmin } from "@/lib/permissions"
 import { planService } from "@/server/services/plan.service"
 import { createPlanSchema } from "@/schemas/plan.schema"
-import apiErrorHandler from "@/utils/handlers/apiError.handler"
+import apiErrorHandler, { ApiError } from "@/utils/handlers/apiError.handler"
 import { ERROR_MESSAGES } from "@/constants/error-messages.constant"
 import httpStatus from "http-status"
 
@@ -14,7 +14,7 @@ export async function GET() {
     return Response.json(plans)
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request: new NextRequest(new URL("/api/plans", "http://localhost")),
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     return Response.json(plan, { status: httpStatus.CREATED })
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })

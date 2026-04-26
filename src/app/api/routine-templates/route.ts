@@ -2,7 +2,7 @@ import { NextRequest } from "next/server"
 import { requireAuth, requireAccountAccess } from "@/lib/permissions"
 import { templateService } from "@/server/services/template.service"
 import { createRoutineTemplateSchema } from "@/schemas/routine.schema"
-import apiErrorHandler from "@/utils/handlers/apiError.handler"
+import apiErrorHandler, { ApiError } from "@/utils/handlers/apiError.handler"
 import { ERROR_MESSAGES } from "@/constants/error-messages.constant"
 import httpStatus from "http-status"
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     return Response.json(templates)
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     return Response.json(template, { status: httpStatus.CREATED })
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })

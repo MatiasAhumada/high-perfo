@@ -19,7 +19,7 @@ export function ToolCard({ tool, onToggle, delay = 0 }: ToolCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay, ease: "easeOut" }}
       className={cn(
-        "relative bg-surface-container-high border rounded-lg p-6 space-y-4 transition-all cursor-pointer group hover:shadow-lg",
+        "relative bg-surface-container-high border rounded-xl p-5 sm:p-6 space-y-4 transition-all cursor-pointer group hover:shadow-lg",
         tool.active ? "border-on-tertiary-container/30 shadow-red-900/10" : "border-outline-variant/30 hover:border-outline-variant/60"
       )}
       onClick={() => onToggle(tool.id)}
@@ -34,18 +34,18 @@ export function ToolCard({ tool, onToggle, delay = 0 }: ToolCardProps) {
 
       <div className="flex items-start justify-between relative z-10">
         <div>
-          <h3 className="font-display font-semibold text-on-surface">{tool.name}</h3>
-          <p className="text-label-caps text-on-surface-variant/40 mt-0.5 uppercase tracking-wider">{tool.category}</p>
+          <h3 className="font-display font-semibold text-on-surface text-sm sm:text-base">{tool.name}</h3>
+          <p className="text-[10px] sm:text-xs text-on-surface-variant/40 mt-0.5 uppercase tracking-wider">{tool.category}</p>
         </div>
         <StatusBadge variant={tool.active ? "active" : "inactive"} />
       </div>
 
-      <p className="text-sm text-on-surface-variant/60 relative z-10 leading-relaxed">{tool.description}</p>
+      <p className="text-sm text-on-surface-variant/60 relative z-10 leading-relaxed line-clamp-2">{tool.description}</p>
 
       <div className="flex items-center justify-between pt-3 border-t border-outline-variant/20 relative z-10">
         <span
           className={cn(
-            "text-label-caps uppercase tracking-wider text-xs font-semibold",
+            "text-[10px] uppercase tracking-wider font-semibold",
             tool.active ? "text-on-tertiary-container" : "text-on-surface-variant/30"
           )}
         >
@@ -53,7 +53,7 @@ export function ToolCard({ tool, onToggle, delay = 0 }: ToolCardProps) {
         </span>
         <div
           className={cn(
-            "w-10 h-5 rounded-full transition-colors relative",
+            "w-10 h-5 sm:w-11 h-6 rounded-full transition-colors relative",
             tool.active ? "bg-on-tertiary-container" : "bg-outline-variant/40"
           )}
         >

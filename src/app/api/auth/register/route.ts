@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { authService } from "@/server/services/auth.service"
 import { registerSchema } from "@/schemas/auth.schema"
-import apiErrorHandler from "@/utils/handlers/apiError.handler"
+import apiErrorHandler, { ApiError } from "@/utils/handlers/apiError.handler"
 import { ERROR_MESSAGES } from "@/constants/error-messages.constant"
 import httpStatus from "http-status"
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     return Response.json(user, { status: httpStatus.CREATED })
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })

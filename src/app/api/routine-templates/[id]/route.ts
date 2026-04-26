@@ -2,7 +2,7 @@ import { NextRequest } from "next/server"
 import { requireAuth } from "@/lib/permissions"
 import { templateService } from "@/server/services/template.service"
 import { createRoutineTemplateSchema } from "@/schemas/routine.schema"
-import apiErrorHandler from "@/utils/handlers/apiError.handler"
+import apiErrorHandler, { ApiError } from "@/utils/handlers/apiError.handler"
 import { ERROR_MESSAGES } from "@/constants/error-messages.constant"
 import httpStatus from "http-status"
 
@@ -17,7 +17,7 @@ export async function GET(
     return Response.json(template)
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request: _request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })
@@ -55,7 +55,7 @@ export async function PATCH(
     return Response.json(updated)
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })
@@ -73,7 +73,7 @@ export async function DELETE(
     return new Response(null, { status: httpStatus.NO_CONTENT })
   } catch (error) {
     return apiErrorHandler({
-      error: error as import("@/utils/handlers/apiError.handler").ApiError,
+      error: error as ApiError,
       request: _request,
       fallbackMessage: ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     })

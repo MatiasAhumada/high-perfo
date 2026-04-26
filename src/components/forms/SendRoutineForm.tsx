@@ -33,15 +33,15 @@ export function SendRoutineForm({ athletes, routineName }: SendRoutineFormProps)
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <div>
-        <p className="text-label-caps text-on-surface-variant/50 mb-2">{UI_TEXTS.SEND_ROUTINE.SELECT_ATHLETES}</p>
+        <p className="text-[10px] sm:text-xs text-on-surface-variant/50 mb-2">{UI_TEXTS.SEND_ROUTINE.SELECT_ATHLETES}</p>
         <p className="text-sm text-on-surface-variant/70 mb-4">
           Rutina: <span className="text-on-surface font-display font-medium">{routineName}</span>
         </p>
       </div>
 
-      <div className="space-y-2 max-h-64 overflow-y-auto">
+      <div className="space-y-2 max-h-48 sm:max-h-64 overflow-y-auto">
         {athletes.map((athlete) => (
           <label
             key={athlete.id}
@@ -51,12 +51,12 @@ export function SendRoutineForm({ athletes, routineName }: SendRoutineFormProps)
               type="checkbox"
               checked={selectedAthletes.has(athlete.id)}
               onChange={() => toggleAthlete(athlete.id)}
-              className="w-4 h-4 rounded-sm border-outline-variant text-on-tertiary-container focus:ring-on-tertiary-container/30 bg-surface-container"
+              className="w-4 h-4 rounded-sm border-outline-variant text-on-tertiary-container focus:ring-on-tertiary-container/30 bg-surface-container shrink-0"
             />
-            <span className="font-display text-sm text-on-surface">
+            <span className="font-display text-sm text-on-surface truncate">
               {athlete.firstName} {athlete.lastName}
             </span>
-            <span className="text-label-caps text-on-surface-variant/40 ml-auto">
+            <span className="text-[10px] sm:text-xs text-on-surface-variant/40 ml-auto shrink-0">
               {athlete.position}
             </span>
           </label>

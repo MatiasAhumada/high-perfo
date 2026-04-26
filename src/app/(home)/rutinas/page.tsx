@@ -52,11 +52,11 @@ export default function RutinasPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <RoutineHeader onSendEmail={() => setSendModalOpen(true)} />
 
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 xl:col-span-8">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-6">
+        <div className="col-span-1 xl:col-span-8">
           <ExerciseList
             exercises={exercises}
             onAdd={addExercise}
@@ -64,7 +64,7 @@ export default function RutinasPage() {
             onUpdate={updateExercise}
           />
         </div>
-        <div className="col-span-12 xl:col-span-4">
+        <div className="col-span-1 xl:col-span-4">
           <ToolboxSection
             tools={tools}
             selectedTools={selectedToolIds}

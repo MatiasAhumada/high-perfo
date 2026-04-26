@@ -43,7 +43,7 @@ export default function AthletesPage() {
               {athlete.firstName[0]}{athlete.lastName[0]}
             </span>
           </div>
-          <span className="font-display font-medium">{athlete.firstName} {athlete.lastName}</span>
+          <span className="font-display font-medium text-sm sm:text-base">{athlete.firstName} {athlete.lastName}</span>
         </div>
       ),
     },
@@ -58,14 +58,14 @@ export default function AthletesPage() {
       key: "sport",
       label: "Deporte",
       render: (athlete: AthleteMock) => (
-        <span className="text-sm text-on-surface-variant">{athlete.sport}</span>
+        <span className="text-sm text-on-surface-variant hidden md:inline">{athlete.sport}</span>
       ),
     },
     {
       key: "latestAssessment",
       label: "Última Evaluación",
       render: (athlete: AthleteMock) => (
-        <span className="text-data-mono font-data text-on-surface-variant/60">
+        <span className="text-sm font-body text-on-surface-variant/60 hidden sm:inline">
           {athlete.latestAssessment ?? "—"}
         </span>
       ),
@@ -73,7 +73,7 @@ export default function AthletesPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <DataTable<AthleteMock>
         title={UI_TEXTS.ATHLETES.TITLE}
         subtitle={UI_TEXTS.ATHLETES.SUBTITLE}
@@ -88,10 +88,10 @@ export default function AthletesPage() {
         actions={
           <Button
             onClick={() => setModalOpen(true)}
-            className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display gap-1.5 rounded-lg"
+            className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display gap-1.5 rounded-lg text-sm"
           >
             <AddCircleIcon size={16} />
-            {UI_TEXTS.ATHLETES.ADD_ATHLETE}
+            <span className="hidden sm:inline">{UI_TEXTS.ATHLETES.ADD_ATHLETE}</span>
           </Button>
         }
       />

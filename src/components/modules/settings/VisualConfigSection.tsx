@@ -31,12 +31,12 @@ export function VisualConfigSection({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className="bg-surface-container border border-outline-variant/30 rounded-lg p-6 space-y-6"
+      className="bg-surface-container border border-outline-variant/30 rounded-xl p-5 sm:p-6 space-y-5 sm:space-y-6"
     >
       <h3 className="font-display font-semibold text-on-surface">{UI_TEXTS.SETTINGS.VISUAL_CONFIG}</h3>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div>
-          <label className="text-label-caps text-on-surface-variant/50 block mb-1">{UI_TEXTS.SETTINGS.PRIMARY_COLOR}</label>
+          <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-2">{UI_TEXTS.SETTINGS.PRIMARY_COLOR}</label>
           <div className="flex items-center gap-3">
             <input
               type="color"
@@ -44,11 +44,11 @@ export function VisualConfigSection({
               onChange={(e) => onPrimaryColorChange(e.target.value)}
               className="w-10 h-10 rounded-lg border border-outline-variant/30 cursor-pointer bg-transparent"
             />
-            <span className="text-data-mono font-data text-on-surface-variant/60">{primaryColor}</span>
+            <span className="text-xs sm:text-sm font-body text-on-surface-variant/60">{primaryColor}</span>
           </div>
         </div>
         <div>
-          <label className="text-label-caps text-on-surface-variant/50 block mb-1">{UI_TEXTS.SETTINGS.SURFACE_COLOR}</label>
+          <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-2">{UI_TEXTS.SETTINGS.SURFACE_COLOR}</label>
           <div className="flex items-center gap-3">
             <input
               type="color"
@@ -56,13 +56,13 @@ export function VisualConfigSection({
               onChange={(e) => onSurfaceColorChange(e.target.value)}
               className="w-10 h-10 rounded-lg border border-outline-variant/30 cursor-pointer bg-transparent"
             />
-            <span className="text-data-mono font-data text-on-surface-variant/60">{surfaceColor}</span>
+            <span className="text-xs sm:text-sm font-body text-on-surface-variant/60">{surfaceColor}</span>
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div>
-          <label className="text-label-caps text-on-surface-variant/50 block mb-1">{UI_TEXTS.SETTINGS.TEXT_COLOR}</label>
+          <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-2">{UI_TEXTS.SETTINGS.TEXT_COLOR}</label>
           <div className="flex items-center gap-3">
             <input
               type="color"
@@ -70,11 +70,11 @@ export function VisualConfigSection({
               onChange={(e) => onTextColorChange(e.target.value)}
               className="w-10 h-10 rounded-lg border border-outline-variant/30 cursor-pointer bg-transparent"
             />
-            <span className="text-data-mono font-data text-on-surface-variant/60">{textColor}</span>
+            <span className="text-xs sm:text-sm font-body text-on-surface-variant/60">{textColor}</span>
           </div>
         </div>
         <div>
-          <label className="text-label-caps text-on-surface-variant/50 block mb-1">{UI_TEXTS.SETTINGS.BORDER_RADIUS}</label>
+          <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-2">{UI_TEXTS.SETTINGS.BORDER_RADIUS}</label>
           <input
             type="range"
             min="0"
@@ -83,30 +83,32 @@ export function VisualConfigSection({
             onChange={(e) => onBorderRadiusChange(e.target.value)}
             className="w-full accent-on-tertiary-container"
           />
-          <span className="text-data-mono font-data text-on-surface-variant/60">{borderRadius}px</span>
+          <span className="text-xs sm:text-sm font-body text-on-surface-variant/60">{borderRadius}px</span>
         </div>
       </div>
 
       <div className="pt-2">
         <div
-          className="rounded-lg p-4 border border-outline-variant/20 space-y-2"
+          className="rounded-lg p-4 border border-outline-variant/20 space-y-3"
           style={{
             backgroundColor: surfaceColor,
             borderRadius: `${borderRadius}px`,
           }}
         >
-          <p style={{ color: primaryColor }} className="font-display font-bold">Vista Previa</p>
+          <p style={{ color: primaryColor }} className="font-display font-bold text-base sm:text-lg">Vista Previa</p>
           <p style={{ color: textColor }} className="text-sm">Texto de ejemplo con la configuración seleccionada</p>
-          <button
-            style={{
-              backgroundColor: primaryColor,
-              color: surfaceColor,
-              borderRadius: `${borderRadius}px`,
-            }}
-            className="px-4 py-2 text-sm font-display font-medium"
-          >
-            Botón de prueba
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              style={{
+                backgroundColor: primaryColor,
+                color: surfaceColor,
+                borderRadius: `${borderRadius}px`,
+              }}
+              className="px-4 py-2 text-sm font-display font-medium"
+            >
+              Botón de prueba
+            </button>
+          </div>
         </div>
       </div>
     </motion.section>

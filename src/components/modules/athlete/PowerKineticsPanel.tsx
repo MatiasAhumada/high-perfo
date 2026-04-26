@@ -21,18 +21,18 @@ export function PowerKineticsPanel({ assessment }: PowerKineticsPanelProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.1 }}
-      className="bg-surface-container border border-outline-variant/30 rounded-lg p-6 space-y-6 relative overflow-hidden"
+      className="bg-surface-container border border-outline-variant/30 rounded-xl p-5 sm:p-6 space-y-5 sm:space-y-6 relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-on-tertiary-container/40 to-transparent" />
 
       <div className="flex items-center gap-3">
         <Activity01Icon size={18} className="text-on-tertiary-container" />
-        <h3 className="text-headline-md font-display text-on-surface">
+        <h3 className="text-lg sm:text-xl font-display text-on-surface">
           {UI_TEXTS.ATHLETES.POWER_KINETICS}
         </h3>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {sjMetric && (
           <MetricCard
             label={UI_TEXTS.METRICS.SJ}

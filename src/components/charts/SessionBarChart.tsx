@@ -38,18 +38,18 @@ export function SessionBarChart({ data, activeMetric = "sj" }: SessionBarChartPr
   const lastIndex = data.length - 1;
 
   return (
-    <div className="w-full h-[280px] bg-surface-container-low rounded-lg p-4 border border-outline-variant/20">
+    <div className="w-full h-[200px] sm:h-[250px] lg:h-[280px] bg-surface-container-low rounded-lg p-3 sm:p-4 border border-outline-variant/20">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} barCategoryGap="20%" margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#46464c" vertical={false} opacity={0.15} />
           <XAxis
             dataKey="label"
-            tick={{ fill: "#919096", fontSize: 12 }}
+            tick={{ fill: "#919096", fontSize: 11 }}
             axisLine={{ stroke: "#46464c" }}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: "#919096", fontSize: 12 }}
+            tick={{ fill: "#919096", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             domain={["dataMin - 3", "dataMax + 3"]}

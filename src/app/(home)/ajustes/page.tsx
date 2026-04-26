@@ -18,9 +18,9 @@ export default function AjustesPage() {
   const [borderRadius, setBorderRadius] = useState(DEFAULT_BORDER_RADIUS);
 
   return (
-    <div className="space-y-8 max-w-2xl">
+    <div className="space-y-6 sm:space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-headline-md font-display text-on-surface">{UI_TEXTS.SETTINGS.TITLE}</h2>
+        <h2 className="text-xl sm:text-2xl font-display text-on-surface">{UI_TEXTS.SETTINGS.TITLE}</h2>
       </div>
 
       <ProfileSection delay={0.1} />
