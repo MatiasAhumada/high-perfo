@@ -15,6 +15,12 @@ export const SIDEBAR_ITEMS = [
   { key: "settings", label: "Ajustes", path: "/ajustes", icon: "SettingsIcon" },
 ] as const;
 
+export const SIDEBAR_ITEMS_ADMIN = [
+  { key: "dashboard", label: "Dashboard", path: "/", icon: "DashboardIcon" },
+  { key: "usuarios", label: "Usuarios", path: "/usuarios", icon: "UserGroupIcon" },
+  { key: "settings", label: "Ajustes", path: "/ajustes", icon: "SettingsIcon" },
+] as const;
+
 export const ROUTE_LABELS: Record<string, string> = {
   "": "Inicio",
   login: "Iniciar Sesión",

@@ -1,19 +1,46 @@
-import clientAxios from "@/utils/clientAxios.util";
+import axios from "axios";
 import { API_ROUTES } from "@/constants/routes";
 
-export const accountService = {
-  async findAll() {
-    const { data } = await clientAxios.get(API_ROUTES.ACCOUNTS);
+export const accountClient = {
+  async getAll() {
+    const { data } = await axios.get(API_ROUTES.ACCOUNTS);
     return data;
   },
 
-  async findById(id: string) {
-    const { data } = await clientAxios.get(`${API_ROUTES.ACCOUNTS}/${id}`);
+  async createWithUser(payload: {
+    accountName: string;
+    isOrganization: boolean;
+    maxCoaches: number;
+    maxAthletes: number;
+    userEmail: string;
+    userName: string;
+    userPassword: string;
+    userRole: "ORG_ADMIN" | "COACH";
+  }) {
+    const { data } = await axios.post(API_ROUTES.ACCOUNTS, payload);
+    return data;
+  },
+};
+
+export const userClient = {
+  async getAll(accountId?: string) {
+    const params = accountId ? `?accountId=${accountId}` : "";
+    const { data } = await axios.get(`${API_ROUTES.USERS}${params}`);
     return data;
   },
 
-  async getStats(id: string) {
-    const { data } = await clientAxios.get(`${API_ROUTES.ACCOUNTS}/${id}/stats`);
+  async getGlobal() {
+    const { data } = await axios.get(`${API_ROUTES.USERS}?global=true`);
+    return data;
+  },
+
+  async create(payload: {
+    email: string;
+    name: string;
+    password: string;
+    role?: "ORG_ADMIN" | "COACH";
+  }, accountId: string) {
+    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
     return data;
   },
 };

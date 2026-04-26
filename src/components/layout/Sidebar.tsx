@@ -13,10 +13,15 @@ import {
   Download01Icon,
   Menu01Icon,
   Cancel01Icon,
+  Settings02Icon,
+  UserGroupIcon,
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
 } from "hugeicons-react";
 import { UI_TEXTS } from "@/constants/ui-texts.constant";
-import { SIDEBAR_ITEMS } from "@/constants/routes";
+import { SIDEBAR_ITEMS, SIDEBAR_ITEMS_ADMIN } from "@/constants/routes";
 import { cn } from "@/lib/utils";
+import { useCurrentUser } from "@/hooks";
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   DashboardIcon: DashboardSquare01Icon,
@@ -30,13 +35,13 @@ function SidebarItem({
   item,
   isActive,
   onClick,
+  iconComponent: IconComponent,
 }: {
-  item: (typeof SIDEBAR_ITEMS)[number];
+  item: { key: string; label: string; path: string; icon: string };
   isActive: boolean;
   onClick?: () => void;
+  iconComponent?: React.ComponentType<{ size?: number; className?: string }>;
 }) {
-  const IconComponent = ICON_MAP[item.icon];
-
   return (
     <Link
       href={item.path}
@@ -62,21 +67,54 @@ function SidebarItem({
 export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { role, isSuperAdmin, isAdminView, toggleView, setAdminView } = useCurrentUser();
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
+  const items = isSuperAdmin && isAdminView ? SIDEBAR_ITEMS_ADMIN : SIDEBAR_ITEMS;
+  const branding = isSuperAdmin && isAdminView ? "Admin" : "Analista";
+
   const sidebarContent = (
     <div className="flex flex-col h-full bg-surface-container-lowest border-r border-outline-variant/30">
-      <div className="px-5 pt-8 pb-6">
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-on-surface tracking-tight">
-          Perfo<span className="text-on-tertiary-container">rm</span>
-        </h2>
-        <p className="text-on-surface-variant text-xs mt-1 font-body">Analista Senior</p>
+      <div className="px-5 pt-6 pb-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold text-on-surface tracking-tight">
+            Perfo<span className="text-on-tertiary-container">rm</span>
+          </h2>
+        </div>
+        {isSuperAdmin && (
+          <button
+            onClick={toggleView}
+            className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-container border border-outline-variant/30 text-xs font-display text-on-surface-variant hover:border-outline-variant/50 transition-colors"
+          >
+            {isAdminView ? (
+              <>
+                <ArrowRight01Icon size={14} />
+                <span>Vista Coach</span>
+              </>
+            ) : (
+              <>
+                <ArrowLeft01Icon size={14} />
+                <span>Vista Admin</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
+      <p className="text-on-surface-variant text-xs font-body px-5 mb-2">{branding}</p>
       <nav className="flex-1 flex flex-col gap-1 overflow-y-auto py-2">
-        {SIDEBAR_ITEMS.map((item) => {
+        {items.map((item) => {
           const isActive = item.path === "/" ? pathname === "/" : pathname.startsWith(item.path);
-          return <SidebarItem key={item.key} item={item} isActive={isActive} onClick={closeMobile} />;
+          const iconComponent = ICON_MAP[item.icon];
+          return (
+            <SidebarItem
+              key={item.key}
+              item={item}
+              isActive={isActive}
+              onClick={closeMobile}
+              iconComponent={iconComponent}
+            />
+          );
         })}
       </nav>
       <div className="px-5 pb-6 pt-4 border-t border-outline-variant/20">
@@ -91,9 +129,7 @@ export function Sidebar() {
 
   return (
     <>
-      <div className="hidden lg:block w-64 shrink-0 h-screen sticky top-0">
-        {sidebarContent}
-      </div>
+      <div className="hidden lg:block w-64 shrink-0 h-screen sticky top-0">{sidebarContent}</div>
 
       <button
         onClick={() => setMobileOpen(true)}
@@ -120,12 +156,6 @@ export function Sidebar() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="lg:hidden fixed left-0 top-0 bottom-0 w-72 sm:w-80 z-50"
             >
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-                className="absolute inset-0 bg-black/10 pointer-events-none"
-              />
               <div className="relative h-full">
                 <button
                   onClick={closeMobile}
