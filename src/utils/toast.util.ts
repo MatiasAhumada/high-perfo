@@ -1,34 +1,19 @@
-import { toast } from "sonner";
+import { toast, type ExternalToast } from "sonner";
 
-interface ToastOptions {
-  description?: string;
-  duration?: number;
-}
+export type ToastOptions = ExternalToast;
 
 export function toastSuccess(message: string, options?: ToastOptions) {
-  toast.success(message, {
-    description: options?.description,
-    duration: options?.duration,
-  });
+  toast.success(message, options);
 }
 
 export function toastError(message: string, options?: ToastOptions) {
-  toast.error(message, {
-    description: options?.description,
-    duration: options?.duration,
-  });
+  toast.error(message, options);
 }
 
 export function toastWarning(message: string, options?: ToastOptions) {
-  toast.warning(message, {
-    description: options?.description,
-    duration: options?.duration,
-  });
+  toast.warning(message, options);
 }
 
 export function toastInfo(message: string, options?: ToastOptions) {
-  toast.info(message, {
-    description: options?.description,
-    duration: options?.duration,
-  });
+  toast.info(message, options);
 }

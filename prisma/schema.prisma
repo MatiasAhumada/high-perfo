@@ -4,12 +4,237 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ORG_ADMIN
+  COACH
+}
+
+enum RoutineStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum AssessmentType {
+  NEUROMUSCULAR
+  ANTHROPOMETRY
+  VBT
+  ASYMMETRY
+}
+
+enum ToolKey {
+  TEJIDO_BLANDO
+  PLIOMETRIA
+  MOVILIDAD
+  CLIMA
+  GPS
+  ASIMETRIA
+}
+
+model Plan {
+  id              String   @id @default(uuid())
+  name            String
+  maxCoaches      Int      @default(1)
+  maxAthletes     Int      @default(10)
+  maxAssessments  Int      @default(100)
+  price           Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  accounts Account[]
+}
+
+model Account {
+  id             String   @id @default(uuid())
+  name           String
+  isOrganization Boolean  @default(true)
+  planId         String
+  plan           Plan     @relation(fields: [planId], references: [id])
+
+  users             User[]
+  athletes          Athlete[]
+  templates         RoutineTemplate[]
+  designConfig      DesignConfig?
+  metricDefinitions MetricDefinition[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  name     String
+  role     Role   @default(COACH)
+  isActive Boolean @default(true)
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  createdTemplates    RoutineTemplate[]
+  assessmentsPerformed Assessment[]
+  assignedRoutines    AssignedRoutine[]
+
+  deletedAt  DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([accountId])
+}
+
+model DesignConfig {
+  id            String  @id @default(uuid())
+  accountId     String  @unique
+  account       Account @relation(fields: [accountId], references: [id])
+
+  primaryColor   String @default("#ef233c")
+  surfaceColor   String @default("#101417")
+  surfaceVariant String @default("#1d2023")
+  textColor      String @default("#e0e2e6")
+
+  fontFamilyHead String @default("Space Grotesk")
+  fontFamilyBody String @default("Manrope")
+  borderRadius   String @default("0.25rem")
+
+  updatedAt DateTime @updatedAt
+}
+
+model Athlete {
+  id        String    @id @default(uuid())
+  firstName String
+  lastName  String
+  puesto    String?
+  birthDate DateTime?
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  assessments      Assessment[]
+  assignedRoutines AssignedRoutine[]
+
+  deletedAt  DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([accountId])
+}
+
+model Assessment {
+  id        String @id @default(uuid())
+  athleteId String
+  athlete   Athlete @relation(fields: [athleteId], references: [id])
+
+  coachId String
+  coach   User @relation(fields: [coachId], references: [id])
+
+  date       DateTime       @default(now())
+  type       AssessmentType
+  bodyWeight Float?
+
+  results MetricResult[]
+
+  @@index([athleteId])
+}
+
+model MetricResult {
+  id             String     @id @default(uuid())
+  assessmentId   String
+  assessment     Assessment @relation(fields: [assessmentId], references: [id])
+
+  key             String
+  rawValue        Float
+  calculatedValue Float?
+
+  createdAt DateTime @default(now())
+
+  @@index([assessmentId])
+}
+
+model RoutineTemplate {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  creatorId String
+  creator   User @relation(fields: [creatorId], references: [id])
+
+  exercises TemplateExercise[]
+  assignedRoutines AssignedRoutine[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([accountId])
+}
+
+model TemplateExercise {
+  id               String          @id @default(uuid())
+  templateId       String
+  template         RoutineTemplate @relation(fields: [templateId], references: [id])
+
+  name             String
+  order            Int
+  sets             Int
+  reps             Int
+  intensityPercent Float?
+
+  createdAt DateTime @default(now())
+}
+
+model AssignedRoutine {
+  id String @id @default(uuid())
+  athleteId String
+  athlete Athlete @relation(fields: [athleteId], references: [id])
+
+  coachId String
+  coach User @relation(fields: [coachId], references: [id])
+
+  templateId String?
+  template RoutineTemplate? @relation(fields: [templateId], references: [id])
+
+  startDate DateTime
+  endDate DateTime?
+  status RoutineStatus @default(ACTIVE)
+
+  toolExecutions ToolExecution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([athleteId, status])
+}
+
+model ToolExecution {
+  id                String          @id @default(uuid())
+  assignedRoutineId String
+  routine           AssignedRoutine @relation(fields: [assignedRoutineId], references: [id])
+
+  toolKey   ToolKey
+  completed Boolean  @default(false)
+  data      Json?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model MetricDefinition {
+  id        String  @id @default(uuid())
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  key             String
+  label           String
+  unit            String
+  redZoneLimit    Float?
+  greenZoneLimit  Float?
+
+  @@unique([accountId, key])
 }
