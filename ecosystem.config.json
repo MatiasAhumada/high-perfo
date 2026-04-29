@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "name": "high-perfo",
+      "script": "pnpm",
+      "args": "start",
+      "cwd": "/root/high-perfo",
+      "instances": 1,
+      "autorestart": true,
+      "watch": false,
+      "max_memory_restart": "1G",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "3012"
+      }
+    }
+  ]
+}
