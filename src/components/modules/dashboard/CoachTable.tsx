@@ -31,11 +31,14 @@ export function CoachTable() {
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0">
             <span className="font-display font-semibold text-xs text-on-surface-variant">
-              {coach.firstName[0]}{coach.lastName[0]}
+              {coach.firstName[0]}
+              {coach.lastName[0]}
             </span>
           </div>
           <div>
-            <p className="font-display font-medium text-on-surface">{coach.firstName} {coach.lastName}</p>
+            <p className="font-display font-medium text-on-surface">
+              {coach.firstName} {coach.lastName}
+            </p>
             <p className="text-xs text-on-surface-variant/40">{coach.email}</p>
           </div>
         </div>
@@ -61,14 +64,20 @@ export function CoachTable() {
       key: "specialty",
       label: UI_TEXTS.DASHBOARD.COACH_SPECIALTY,
       render: (coach: CoachMock) => (
-        <span className="text-sm text-on-surface-variant">{coach.specialty}</span>
+        <span className="text-sm text-on-surface-variant">
+          {coach.specialty}
+        </span>
       ),
     },
     {
       key: "actions",
       label: UI_TEXTS.DASHBOARD.COACH_ACTIONS,
       render: () => (
-        <Button variant="ghost" size="icon-xs" className="text-on-surface-variant/40 hover:text-on-surface-variant">
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          className="text-on-surface-variant/40 hover:text-on-surface-variant"
+        >
           <MoreVerticalIcon size={16} />
         </Button>
       ),

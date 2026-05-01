@@ -15,7 +15,9 @@ interface UpdateMetricData {
 
 export const metricService = {
   async findAll(params: MetricSearchParams) {
-    const { data } = await clientAxios.get(API_ROUTES.METRIC_DEFINITIONS, { params });
+    const { data } = await clientAxios.get(API_ROUTES.METRIC_DEFINITIONS, {
+      params,
+    });
     return data;
   },
 
@@ -25,12 +27,17 @@ export const metricService = {
   },
 
   async update(id: string, dto: UpdateMetricData) {
-    const { data } = await clientAxios.patch(`${API_ROUTES.METRIC_DEFINITIONS}/${id}`, dto);
+    const { data } = await clientAxios.patch(
+      `${API_ROUTES.METRIC_DEFINITIONS}/${id}`,
+      dto,
+    );
     return data;
   },
 
   async remove(id: string) {
-    const { data } = await clientAxios.delete(`${API_ROUTES.METRIC_DEFINITIONS}/${id}`);
+    const { data } = await clientAxios.delete(
+      `${API_ROUTES.METRIC_DEFINITIONS}/${id}`,
+    );
     return data;
   },
 };

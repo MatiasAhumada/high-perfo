@@ -1,23 +1,23 @@
 interface RoutineEmailExercise {
-  name: string
-  sets: number
-  reps: number
-  intensityPercent?: number
+  name: string;
+  sets: number;
+  reps: number;
+  intensityPercent?: number;
 }
 
 interface RoutineEmailToolExecution {
-  toolKey: string
-  completed: boolean
+  toolKey: string;
+  completed: boolean;
 }
 
 interface RoutineEmailData {
-  routineName: string
-  athleteName: string
-  coachName: string
-  startDate: string
-  endDate?: string
-  exercises: RoutineEmailExercise[]
-  toolExecutions?: RoutineEmailToolExecution[]
+  routineName: string;
+  athleteName: string;
+  coachName: string;
+  startDate: string;
+  endDate?: string;
+  exercises: RoutineEmailExercise[];
+  toolExecutions?: RoutineEmailToolExecution[];
 }
 
 const EMAIL_COLORS = {
@@ -28,7 +28,7 @@ const EMAIL_COLORS = {
   mutedText: "#8b8f94",
   border: "#2a2d31",
   success: "#22c55e",
-} as const
+} as const;
 
 function buildExerciseRows(exercises: RoutineEmailExercise[]): string {
   return exercises
@@ -41,10 +41,12 @@ function buildExerciseRows(exercises: RoutineEmailExercise[]): string {
         <td style="padding: 10px 16px; color: ${EMAIL_COLORS.mutedText}; font-size: 14px; text-align: center;">${exercise.intensityPercent ? `${exercise.intensityPercent}%` : "—"}</td>
       </tr>`,
     )
-    .join("")
+    .join("");
 }
 
-function buildToolExecutionRows(toolExecutions: RoutineEmailToolExecution[]): string {
+function buildToolExecutionRows(
+  toolExecutions: RoutineEmailToolExecution[],
+): string {
   return toolExecutions
     .map(
       (tool) => `
@@ -57,11 +59,13 @@ function buildToolExecutionRows(toolExecutions: RoutineEmailToolExecution[]): st
         </td>
       </tr>`,
     )
-    .join("")
+    .join("");
 }
 
-function buildToolExecutionsSection(toolExecutions: RoutineEmailToolExecution[]): string {
-  if (!toolExecutions.length) return ""
+function buildToolExecutionsSection(
+  toolExecutions: RoutineEmailToolExecution[],
+): string {
+  if (!toolExecutions.length) return "";
 
   return `
     <div style="margin-top: 24px;">
@@ -77,11 +81,13 @@ function buildToolExecutionsSection(toolExecutions: RoutineEmailToolExecution[])
           ${buildToolExecutionRows(toolExecutions)}
         </tbody>
       </table>
-    </div>`
+    </div>`;
 }
 
 export function buildRoutineEmailHtml(data: RoutineEmailData): string {
-  const dateRange = data.endDate ? `${data.startDate} — ${data.endDate}` : data.startDate
+  const dateRange = data.endDate
+    ? `${data.startDate} — ${data.endDate}`
+    : data.startDate;
 
   return `
 <!DOCTYPE html>
@@ -147,5 +153,5 @@ export function buildRoutineEmailHtml(data: RoutineEmailData): string {
     </tr>
   </table>
 </body>
-</html>`
+</html>`;
 }

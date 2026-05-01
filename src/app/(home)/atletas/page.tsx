@@ -40,10 +40,13 @@ export default function AthletesPage() {
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0">
             <span className="font-display font-semibold text-xs text-on-surface-variant">
-              {athlete.firstName[0]}{athlete.lastName[0]}
+              {athlete.firstName[0]}
+              {athlete.lastName[0]}
             </span>
           </div>
-          <span className="font-display font-medium text-sm sm:text-base">{athlete.firstName} {athlete.lastName}</span>
+          <span className="font-display font-medium text-sm sm:text-base">
+            {athlete.firstName} {athlete.lastName}
+          </span>
         </div>
       ),
     },
@@ -51,14 +54,18 @@ export default function AthletesPage() {
       key: "position",
       label: UI_TEXTS.ATHLETES.POSITION,
       render: (athlete: AthleteMock) => (
-        <span className="text-sm text-on-surface-variant">{athlete.position}</span>
+        <span className="text-sm text-on-surface-variant">
+          {athlete.position}
+        </span>
       ),
     },
     {
       key: "sport",
       label: "Deporte",
       render: (athlete: AthleteMock) => (
-        <span className="text-sm text-on-surface-variant hidden md:inline">{athlete.sport}</span>
+        <span className="text-sm text-on-surface-variant hidden md:inline">
+          {athlete.sport}
+        </span>
       ),
     },
     {
@@ -84,14 +91,18 @@ export default function AthletesPage() {
         searchPlaceholder={UI_TEXTS.ATHLETES.SEARCH_PLACEHOLDER}
         onSearch={setSearch}
         totalLabel={`${athletes.length} ${UI_TEXTS.COMMON.TOTAL.toLowerCase()}`}
-        onRowClick={(athlete) => router.push(`${ROUTES.ATHLETES}/${athlete.id}`)}
+        onRowClick={(athlete) =>
+          router.push(`${ROUTES.ATHLETES}/${athlete.id}`)
+        }
         actions={
           <Button
             onClick={() => setModalOpen(true)}
             className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display gap-1.5 rounded-lg text-sm"
           >
             <AddCircleIcon size={16} />
-            <span className="hidden sm:inline">{UI_TEXTS.ATHLETES.ADD_ATHLETE}</span>
+            <span className="hidden sm:inline">
+              {UI_TEXTS.ATHLETES.ADD_ATHLETE}
+            </span>
           </Button>
         }
       />

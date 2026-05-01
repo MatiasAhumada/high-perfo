@@ -10,7 +10,16 @@ interface StatusBadgeProps {
   className?: string;
 }
 
-const VARIANT_STYLES: Record<BadgeVariant, { bg: string; text: string; dot: string; border: string; defaultLabel: string }> = {
+const VARIANT_STYLES: Record<
+  BadgeVariant,
+  {
+    bg: string;
+    text: string;
+    dot: string;
+    border: string;
+    defaultLabel: string;
+  }
+> = {
   active: {
     bg: "bg-[#0f3d2b]",
     text: "text-[#4ade80]",
@@ -44,7 +53,7 @@ export function StatusBadge({ variant, label, className }: StatusBadgeProps) {
         style.bg,
         style.text,
         style.border,
-        className
+        className,
       )}
     >
       {label ?? style.defaultLabel}

@@ -16,7 +16,10 @@ interface UpdateAssessmentData {
 
 export const assessmentService = {
   async findByAthlete(athleteId: string, params: AssessmentByAthleteParams) {
-    const { data } = await clientAxios.get(`${API_ROUTES.ATHLETES}/${athleteId}/assessments`, { params });
+    const { data } = await clientAxios.get(
+      `${API_ROUTES.ATHLETES}/${athleteId}/assessments`,
+      { params },
+    );
     return data;
   },
 
@@ -26,17 +29,25 @@ export const assessmentService = {
   },
 
   async create(athleteId: string, dto: CreateAssessmentDto) {
-    const { data } = await clientAxios.post(`${API_ROUTES.ATHLETES}/${athleteId}/assessments`, dto);
+    const { data } = await clientAxios.post(
+      `${API_ROUTES.ATHLETES}/${athleteId}/assessments`,
+      dto,
+    );
     return data;
   },
 
   async update(id: string, dto: UpdateAssessmentData) {
-    const { data } = await clientAxios.patch(`${API_ROUTES.ASSESSMENTS}/${id}`, dto);
+    const { data } = await clientAxios.patch(
+      `${API_ROUTES.ASSESSMENTS}/${id}`,
+      dto,
+    );
     return data;
   },
 
   async remove(id: string) {
-    const { data } = await clientAxios.delete(`${API_ROUTES.ASSESSMENTS}/${id}`);
+    const { data } = await clientAxios.delete(
+      `${API_ROUTES.ASSESSMENTS}/${id}`,
+    );
     return data;
   },
 };

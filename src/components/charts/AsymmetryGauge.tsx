@@ -13,7 +13,11 @@ interface AsymmetryGaugeProps {
 
 const ASYMMETRY_THRESHOLD = 15;
 
-export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD }: AsymmetryGaugeProps) {
+export function AsymmetryGauge({
+  data,
+  asiIndex,
+  threshold = ASYMMETRY_THRESHOLD,
+}: AsymmetryGaugeProps) {
   const isAlert = asiIndex > threshold;
 
   return (
@@ -39,11 +43,13 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
           "text-3xl sm:text-4xl font-display leading-none tracking-tight",
-          isAlert ? "text-on-tertiary-container" : "text-on-surface"
+          isAlert ? "text-on-tertiary-container" : "text-on-surface",
         )}
       >
         {asiIndex.toFixed(1)}
-        <span className="text-sm sm:text-base text-on-surface-variant/60 ml-1">%</span>
+        <span className="text-sm sm:text-base text-on-surface-variant/60 ml-1">
+          %
+        </span>
       </motion.div>
 
       <div className="relative w-full h-2.5 sm:h-3 bg-surface-container-low rounded-full overflow-hidden border border-outline-variant/10">
@@ -53,7 +59,7 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           className={cn(
             "h-full rounded-full",
-            isAlert ? "bg-on-tertiary-container" : "bg-secondary-brand"
+            isAlert ? "bg-on-tertiary-container" : "bg-secondary-brand",
           )}
         />
         <div
@@ -66,11 +72,15 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
         {data.map((item) => (
           <div key={item.side} className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs sm:text-sm text-on-surface-variant/70">{item.side}</span>
+              <span className="text-xs sm:text-sm text-on-surface-variant/70">
+                {item.side}
+              </span>
               <span
                 className={cn(
                   "text-xs sm:text-sm font-body",
-                  isAlert && item.value > 55 ? "text-on-tertiary-container" : "text-on-surface"
+                  isAlert && item.value > 55
+                    ? "text-on-tertiary-container"
+                    : "text-on-surface",
                 )}
               >
                 {item.value.toFixed(1)}%
@@ -83,7 +93,9 @@ export function AsymmetryGauge({ data, asiIndex, threshold = ASYMMETRY_THRESHOLD
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                 className={cn(
                   "h-full rounded-full",
-                  isAlert && item.value > 55 ? "bg-on-tertiary-container/70" : "bg-secondary-brand/60"
+                  isAlert && item.value > 55
+                    ? "bg-on-tertiary-container/70"
+                    : "bg-secondary-brand/60",
                 )}
               />
             </div>

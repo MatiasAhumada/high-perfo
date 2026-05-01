@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 const ROUTINE_TEMPLATE_SELECT = {
   id: true,
@@ -12,25 +12,25 @@ const ROUTINE_TEMPLATE_SELECT = {
   _count: {
     select: { exercises: true },
   },
-} satisfies Prisma.RoutineTemplateSelect
+} satisfies Prisma.RoutineTemplateSelect;
 
 type TemplateFindOptions = {
-  search?: string
-}
+  search?: string;
+};
 
 export const routineTemplateRepository = {
   async findByAccountId(accountId: string, options: TemplateFindOptions = {}) {
-    const where: Prisma.RoutineTemplateWhereInput = { accountId }
+    const where: Prisma.RoutineTemplateWhereInput = { accountId };
 
     if (options.search) {
-      where.name = { contains: options.search, mode: "insensitive" }
+      where.name = { contains: options.search, mode: "insensitive" };
     }
 
     return prisma.routineTemplate.findMany({
       where,
       select: ROUTINE_TEMPLATE_SELECT,
       orderBy: { createdAt: "desc" },
-    })
+    });
   },
 
   async findByIdWithExercises(id: string) {
@@ -41,7 +41,7 @@ export const routineTemplateRepository = {
           orderBy: { order: "asc" },
         },
       },
-    })
+    });
   },
 
   async create(data: Prisma.RoutineTemplateCreateInput) {
@@ -50,7 +50,7 @@ export const routineTemplateRepository = {
       include: {
         exercises: true,
       },
-    })
+    });
   },
 
   async update(id: string, data: Prisma.RoutineTemplateUpdateInput) {
@@ -66,12 +66,12 @@ export const routineTemplateRepository = {
         createdAt: true,
         updatedAt: true,
       },
-    })
+    });
   },
 
   async delete(id: string) {
     return prisma.routineTemplate.delete({
       where: { id },
-    })
+    });
   },
-}
+};

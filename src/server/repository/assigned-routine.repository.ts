@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
-import { RoutineStatus } from "@prisma/client"
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import { RoutineStatus } from "@prisma/client";
 
 const ASSIGNED_ROUTINE_SELECT = {
   id: true,
@@ -11,20 +11,23 @@ const ASSIGNED_ROUTINE_SELECT = {
   status: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Prisma.AssignedRoutineSelect
+} satisfies Prisma.AssignedRoutineSelect;
 
 type AssignedRoutineFindOptions = {
-  status?: RoutineStatus
-}
+  status?: RoutineStatus;
+};
 
 export const assignedRoutineRepository = {
-  async findByAthleteId(athleteId: string, options: AssignedRoutineFindOptions = {}) {
-    const { status } = options
+  async findByAthleteId(
+    athleteId: string,
+    options: AssignedRoutineFindOptions = {},
+  ) {
+    const { status } = options;
 
     const where: Prisma.AssignedRoutineWhereInput = {
       athleteId,
       ...(status && { status }),
-    }
+    };
 
     return prisma.assignedRoutine.findMany({
       where,
@@ -38,7 +41,7 @@ export const assignedRoutineRepository = {
         },
       },
       orderBy: { createdAt: "desc" },
-    })
+    });
   },
 
   async findByIdWithTools(id: string) {
@@ -55,7 +58,7 @@ export const assignedRoutineRepository = {
           orderBy: { toolKey: "asc" },
         },
       },
-    })
+    });
   },
 
   async findByIdWithTemplate(id: string) {
@@ -79,14 +82,14 @@ export const assignedRoutineRepository = {
           },
         },
       },
-    })
+    });
   },
 
   async create(data: Prisma.AssignedRoutineCreateInput) {
     return prisma.assignedRoutine.create({
       data,
       select: ASSIGNED_ROUTINE_SELECT,
-    })
+    });
   },
 
   async updateStatus(id: string, status: RoutineStatus) {
@@ -94,7 +97,7 @@ export const assignedRoutineRepository = {
       where: { id },
       data: { status },
       select: ASSIGNED_ROUTINE_SELECT,
-    })
+    });
   },
 
   async countActiveByAccountId(accountId: string) {
@@ -103,6 +106,6 @@ export const assignedRoutineRepository = {
         athlete: { accountId },
         status: RoutineStatus.ACTIVE,
       },
-    })
+    });
   },
-}
+};

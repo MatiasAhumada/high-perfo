@@ -27,7 +27,13 @@ interface Usuario {
 }
 
 export function UsuariosView() {
-  const { role, accountId, isSuperAdmin, isAdminView, isLoading: userLoading } = useCurrentUser();
+  const {
+    role,
+    accountId,
+    isSuperAdmin,
+    isAdminView,
+    isLoading: userLoading,
+  } = useCurrentUser();
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [cuentas, setCuentas] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,35 +41,41 @@ export function UsuariosView() {
   const [modalUsuarioOpen, setModalUsuarioOpen] = useState(false);
   const [modalCuentaOpen, setModalCuentaOpen] = useState(false);
 
-  const loadData = useCallback(async (searchTerm?: string) => {
-    try {
-      setLoading(true);
-      let usuariosData: Usuario[];
+  const loadData = useCallback(
+    async (searchTerm?: string) => {
+      try {
+        setLoading(true);
+        let usuariosData: Usuario[];
 
-      if (isSuperAdmin && isAdminView) {
-        usuariosData = await userClient.getGlobal(searchTerm);
-        const cuentasData = await accountClient.getAll();
-        setCuentas(cuentasData);
-      } else {
-        usuariosData = await userClient.getAll(accountId!, searchTerm);
+        if (isSuperAdmin && isAdminView) {
+          usuariosData = await userClient.getGlobal(searchTerm);
+          const cuentasData = await accountClient.getAll();
+          setCuentas(cuentasData);
+        } else {
+          usuariosData = await userClient.getAll(accountId!, searchTerm);
+        }
+
+        setUsuarios(usuariosData);
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setUsuarios(usuariosData);
-    } catch (error) {
-      console.error("Error loading data:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [isSuperAdmin, isAdminView, accountId]);
+    },
+    [isSuperAdmin, isAdminView, accountId],
+  );
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  const handleSearch = useCallback((value: string) => {
-    setSearch(value);
-    loadData(value);
-  }, [loadData]);
+  const handleSearch = useCallback(
+    (value: string) => {
+      setSearch(value);
+      loadData(value);
+    },
+    [loadData],
+  );
 
   const handleUsuarioCreado = () => {
     setModalUsuarioOpen(false);
@@ -94,10 +106,17 @@ export function UsuariosView() {
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0">
             <span className="font-display font-semibold text-xs text-on-surface-variant">
-              {u.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
+              {u.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase()}
             </span>
           </div>
-          <span className="font-display font-medium text-sm text-on-surface">{u.name}</span>
+          <span className="font-display font-medium text-sm text-on-surface">
+            {u.name}
+          </span>
         </div>
       ),
     },
@@ -119,11 +138,15 @@ export function UsuariosView() {
                   u.role === "ORG_ADMIN"
                     ? "bg-on-tertiary-container/10 text-on-tertiary-container"
                     : u.role === "SUPER_ADMIN"
-                    ? "bg-secondary-brand/20 text-secondary-brand"
-                    : "bg-surface-container-high text-secondary-brand"
+                      ? "bg-secondary-brand/20 text-secondary-brand"
+                      : "bg-surface-container-high text-secondary-brand"
                 }`}
               >
-                {u.role === "ORG_ADMIN" ? "Admin" : u.role === "SUPER_ADMIN" ? "Super" : "Coach"}
+                {u.role === "ORG_ADMIN"
+                  ? "Admin"
+                  : u.role === "SUPER_ADMIN"
+                    ? "Super"
+                    : "Coach"}
               </span>
             ),
           },
@@ -131,7 +154,9 @@ export function UsuariosView() {
             key: "account",
             label: "Cuenta",
             render: (u: Usuario) => (
-              <span className="text-sm text-on-surface-variant">{u.account?.name || "—"}</span>
+              <span className="text-sm text-on-surface-variant">
+                {u.account?.name || "—"}
+              </span>
             ),
           },
         ]
@@ -174,7 +199,9 @@ export function UsuariosView() {
     <div className="space-y-5 sm:space-y-6 w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-display text-on-surface">{title}</h2>
+          <h2 className="text-xl sm:text-2xl font-display text-on-surface">
+            {title}
+          </h2>
           <p className="text-sm text-on-surface-variant/50 mt-1">
             {isSuperAdmin && isAdminView
               ? "Gestión de usuarios y cuentas"
@@ -216,7 +243,9 @@ export function UsuariosView() {
       <GenericModal
         open={modalUsuarioOpen}
         onOpenChange={setModalUsuarioOpen}
-        title={isSuperAdmin && isAdminView ? "Nuevo Usuario" : "Nuevo Entrenador"}
+        title={
+          isSuperAdmin && isAdminView ? "Nuevo Usuario" : "Nuevo Entrenador"
+        }
         size="md"
       >
         <UsuarioForm

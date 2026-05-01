@@ -20,9 +20,9 @@ export const METRIC_KEYS = {
   CONCENTRIC_DURATION: "CONCENTRIC_DURATION",
   FLIGHT_TIME: "FLIGHT_TIME",
   CONTACT_TIME: "CONTACT_TIME",
-} as const
+} as const;
 
-export type MetricKey = (typeof METRIC_KEYS)[keyof typeof METRIC_KEYS]
+export type MetricKey = (typeof METRIC_KEYS)[keyof typeof METRIC_KEYS];
 
 export const METRIC_UNITS: Record<MetricKey, string> = {
   SJ: "cm",
@@ -46,7 +46,7 @@ export const METRIC_UNITS: Record<MetricKey, string> = {
   CONCENTRIC_DURATION: "ms",
   FLIGHT_TIME: "ms",
   CONTACT_TIME: "ms",
-}
+};
 
 export const METRIC_LABELS: Record<MetricKey, string> = {
   SJ: "Squat Jump",
@@ -70,6 +70,6 @@ export const METRIC_LABELS: Record<MetricKey, string> = {
   CONCENTRIC_DURATION: "Duración Concéntrica",
   FLIGHT_TIME: "Tiempo de Vuelo",
   CONTACT_TIME: "Tiempo de Contacto",
-}
+};
 
-export const ASYMMETRY_ALERT_THRESHOLD = 15
+export const ASYMMETRY_ALERT_THRESHOLD = 15;

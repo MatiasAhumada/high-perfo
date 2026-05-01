@@ -1,8 +1,8 @@
-import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
-import bcrypt from "bcryptjs"
-import { prisma } from "@/lib/prisma"
-import { loginSchema } from "@/schemas/auth.schema"
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { loginSchema } from "@/schemas/auth.schema";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -12,16 +12,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const parsed = loginSchema.safeParse(credentials)
-        if (!parsed.success) return null
+        const parsed = loginSchema.safeParse(credentials);
+        if (!parsed.success) return null;
 
         const user = await prisma.user.findUnique({
           where: { email: parsed.data.email },
-        })
-        if (!user) return null
+        });
+        if (!user) return null;
 
-        const isValid = await bcrypt.compare(parsed.data.password, user.password)
-        if (!isValid) return null
+        const isValid = await bcrypt.compare(
+          parsed.data.password,
+          user.password,
+        );
+        if (!isValid) return null;
 
         return {
           id: user.id,
@@ -29,23 +32,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: user.name,
           role: user.role,
           accountId: user.accountId,
-        }
+        };
       },
     }),
   ],
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
-        token.role = user.role
-        token.accountId = user.accountId
+        token.role = user.role;
+        token.accountId = user.accountId;
       }
-      return token
+      return token;
     },
     session: ({ session, token }) => {
-      session.user.id = token.sub ?? ""
-      session.user.role = token.role as "SUPER_ADMIN" | "ORG_ADMIN" | "COACH"
-      session.user.accountId = token.accountId as string
-      return session
+      session.user.id = token.sub ?? "";
+      session.user.role = token.role as "SUPER_ADMIN" | "ORG_ADMIN" | "COACH";
+      session.user.accountId = token.accountId as string;
+      return session;
     },
   },
   pages: {
@@ -54,4 +57,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
   },
-})
+  trustHost: true,
+});

@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ProfileSection, AccountSection, VisualConfigSection } from "@/components/modules/settings";
+import {
+  ProfileSection,
+  AccountSection,
+  VisualConfigSection,
+} from "@/components/modules/settings";
 import { UI_TEXTS } from "@/constants/ui-texts.constant";
 import { toastSuccess } from "@/utils/toast.util";
 
@@ -20,7 +24,9 @@ export default function AjustesPage() {
   return (
     <div className="space-y-6 sm:space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-xl sm:text-2xl font-display text-on-surface">{UI_TEXTS.SETTINGS.TITLE}</h2>
+        <h2 className="text-xl sm:text-2xl font-display text-on-surface">
+          {UI_TEXTS.SETTINGS.TITLE}
+        </h2>
       </div>
 
       <ProfileSection delay={0.1} />

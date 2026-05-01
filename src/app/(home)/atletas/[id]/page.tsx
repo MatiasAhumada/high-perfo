@@ -3,9 +3,18 @@
 import { use } from "react";
 import { useAthleteById } from "@/hooks";
 import { useAssessmentByAthlete } from "@/hooks";
-import { AthleteHeader, PowerKineticsPanel, AsymmetryPanel, ForceVelocityPanel } from "@/components/modules/athlete";
+import {
+  AthleteHeader,
+  PowerKineticsPanel,
+  AsymmetryPanel,
+  ForceVelocityPanel,
+} from "@/components/modules/athlete";
 
-export default function AthleteDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default function AthleteDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const { athlete, loading: athleteLoading } = useAthleteById(id);
   const { assessment, loading: assessmentLoading } = useAssessmentByAthlete(id);
@@ -22,7 +31,9 @@ export default function AthleteDetailPage({ params }: { params: Promise<{ id: st
   if (!athlete) {
     return (
       <div className="flex items-center justify-center py-16 sm:py-20">
-        <p className="text-on-surface-variant/60 text-sm sm:text-base">Atleta no encontrado</p>
+        <p className="text-on-surface-variant/60 text-sm sm:text-base">
+          Atleta no encontrado
+        </p>
       </div>
     );
   }
@@ -45,7 +56,9 @@ export default function AthleteDetailPage({ params }: { params: Promise<{ id: st
         </div>
       ) : (
         <div className="flex items-center justify-center py-16 sm:py-20">
-          <p className="text-on-surface-variant/60 text-sm sm:text-base">Sin evaluaciones registradas</p>
+          <p className="text-on-surface-variant/60 text-sm sm:text-base">
+            Sin evaluaciones registradas
+          </p>
         </div>
       )}
     </div>

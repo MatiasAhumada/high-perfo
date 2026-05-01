@@ -16,9 +16,18 @@ interface ExerciseBlockProps {
   onUpdate: (field: string, value: number | string) => void;
 }
 
-const INLINE_INPUT_CLASSES = "w-full bg-transparent border-0 border-b border-outline-variant/30 text-on-surface text-sm sm:text-base font-body text-center py-1.5 focus:border-on-tertiary-container focus:outline-none transition-colors";
+const INLINE_INPUT_CLASSES =
+  "w-full bg-transparent border-0 border-b border-outline-variant/30 text-on-surface text-sm sm:text-base font-body text-center py-1.5 focus:border-on-tertiary-container focus:outline-none transition-colors";
 
-export function ExerciseBlock({ exerciseName, sets, reps, percent1RM, showAdvanced, onRemove, onUpdate }: ExerciseBlockProps) {
+export function ExerciseBlock({
+  exerciseName,
+  sets,
+  reps,
+  percent1RM,
+  showAdvanced,
+  onRemove,
+  onUpdate,
+}: ExerciseBlockProps) {
   const [advancedOpen, setAdvancedOpen] = useState(showAdvanced ?? false);
 
   return (
@@ -33,7 +42,9 @@ export function ExerciseBlock({ exerciseName, sets, reps, percent1RM, showAdvanc
 
       <div className="p-4 sm:p-5 space-y-4">
         <div className="flex items-center justify-between gap-2">
-          <h4 className="font-display font-semibold text-on-surface text-sm sm:text-base">{exerciseName}</h4>
+          <h4 className="font-display font-semibold text-on-surface text-sm sm:text-base">
+            {exerciseName}
+          </h4>
           <div className="flex items-center gap-1">
             <Button
               variant="ghost"
@@ -56,7 +67,9 @@ export function ExerciseBlock({ exerciseName, sets, reps, percent1RM, showAdvanc
 
         <div className="grid grid-cols-3 gap-3 sm:gap-4">
           <div>
-            <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">{UI_TEXTS.ROUTINES.SETS}</label>
+            <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">
+              {UI_TEXTS.ROUTINES.SETS}
+            </label>
             <input
               type="number"
               value={sets}
@@ -65,7 +78,9 @@ export function ExerciseBlock({ exerciseName, sets, reps, percent1RM, showAdvanc
             />
           </div>
           <div>
-            <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">{UI_TEXTS.ROUTINES.REPS}</label>
+            <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">
+              {UI_TEXTS.ROUTINES.REPS}
+            </label>
             <input
               type="number"
               value={reps}
@@ -74,7 +89,9 @@ export function ExerciseBlock({ exerciseName, sets, reps, percent1RM, showAdvanc
             />
           </div>
           <div>
-            <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">{UI_TEXTS.ROUTINES.INTENSITY}</label>
+            <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">
+              {UI_TEXTS.ROUTINES.INTENSITY}
+            </label>
             <input
               type="number"
               value={percent1RM}
@@ -95,12 +112,24 @@ export function ExerciseBlock({ exerciseName, sets, reps, percent1RM, showAdvanc
             >
               <div className="pt-4 border-t border-outline-variant/20 grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">Vel. Objetivo</label>
-                  <input type="text" placeholder="0.8 m/s" className={INLINE_INPUT_CLASSES} />
+                  <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">
+                    Vel. Objetivo
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="0.8 m/s"
+                    className={INLINE_INPUT_CLASSES}
+                  />
                 </div>
                 <div>
-                  <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">RPE Objetivo</label>
-                  <input type="text" placeholder="8" className={INLINE_INPUT_CLASSES} />
+                  <label className="text-[10px] sm:text-xs text-on-surface-variant/50 block mb-1.5 uppercase tracking-wider">
+                    RPE Objetivo
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="8"
+                    className={INLINE_INPUT_CLASSES}
+                  />
                 </div>
               </div>
             </motion.div>

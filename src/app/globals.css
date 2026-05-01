@@ -123,13 +123,13 @@
   --sidebar-primary-foreground: #e0e2e6;
   --sidebar-accent: #f8171a0a;
   --sidebar-accent-foreground: #f8171a;
- --sidebar-border: #46464c;
+  --sidebar-border: #46464c;
   --sidebar-ring: #f8171a;
-  --sidebar-deep: #0F121D;
-  --sidebar-surface: #161A26;
+  --sidebar-deep: #0f121d;
+  --sidebar-surface: #161a26;
   --sidebar-search: #161b28;
   --sidebar-search-border: #2b303e;
- }
+}
 
 @layer base {
   * {

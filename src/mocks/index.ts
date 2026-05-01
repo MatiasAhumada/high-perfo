@@ -1,11 +1,20 @@
 export { athletesMock } from "./athletes.mock";
 export type { AthleteMock } from "./athletes.mock";
 export { assessmentsMock } from "./assessments.mock";
-export type { AssessmentMock, MetricResultMock, SessionDataMock, ForceVelocityPointMock, AsymmetryDataMock } from "./assessments.mock";
+export type {
+  AssessmentMock,
+  MetricResultMock,
+  SessionDataMock,
+  ForceVelocityPointMock,
+  AsymmetryDataMock,
+} from "./assessments.mock";
 export { coachesMock } from "./coaches.mock";
 export type { CoachMock } from "./coaches.mock";
 export { routinesMock } from "./routines.mock";
-export type { RoutineTemplateMock, TemplateExerciseMock } from "./routines.mock";
+export type {
+  RoutineTemplateMock,
+  TemplateExerciseMock,
+} from "./routines.mock";
 export { toolsMock } from "./tools.mock";
 export type { ToolMock } from "./tools.mock";
 export { statsMock } from "./stats.mock";

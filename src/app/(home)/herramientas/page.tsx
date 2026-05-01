@@ -10,8 +10,12 @@ export default function HerramientasPage() {
   return (
     <div className="space-y-5 sm:space-y-6">
       <div>
-        <h2 className="text-xl sm:text-2xl font-display text-on-surface">{UI_TEXTS.TOOLS.TITLE}</h2>
-        <p className="text-sm text-on-surface-variant/50 mt-1 hidden sm:block">{UI_TEXTS.TOOLS.SUBTITLE}</p>
+        <h2 className="text-xl sm:text-2xl font-display text-on-surface">
+          {UI_TEXTS.TOOLS.TITLE}
+        </h2>
+        <p className="text-sm text-on-surface-variant/50 mt-1 hidden sm:block">
+          {UI_TEXTS.TOOLS.SUBTITLE}
+        </p>
       </div>
 
       {loading ? (

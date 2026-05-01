@@ -1,6 +1,11 @@
 "use client";
 
-import { Search01Icon, Notification01Icon, HelpCircleIcon, AddCircleIcon } from "hugeicons-react";
+import {
+  Search01Icon,
+  Notification01Icon,
+  HelpCircleIcon,
+  AddCircleIcon,
+} from "hugeicons-react";
 import { UI_TEXTS } from "@/constants/ui-texts.constant";
 import { Button } from "@/components/ui/button";
 
@@ -20,7 +25,10 @@ export function Header({ title }: HeaderProps) {
       </div>
 
       <div className="hidden md:flex items-center relative flex-1 max-w-md mx-4 lg:mx-8">
-        <Search01Icon size={16} className="absolute left-3 text-on-surface-variant" />
+        <Search01Icon
+          size={16}
+          className="absolute left-3 text-on-surface-variant"
+        />
         <input
           type="text"
           placeholder="Buscar atleta, rutina, métrica..."
@@ -45,7 +53,9 @@ export function Header({ title }: HeaderProps) {
         </Button>
         <div className="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden ml-1 cursor-pointer hover:border-outline transition-colors">
           <div className="w-full h-full flex items-center justify-center">
-            <span className="font-display font-semibold text-[10px] text-secondary-brand">AG</span>
+            <span className="font-display font-semibold text-[10px] text-secondary-brand">
+              AG
+            </span>
           </div>
         </div>
         <Button
@@ -53,7 +63,9 @@ export function Header({ title }: HeaderProps) {
           className="bg-on-tertiary-container hover:bg-on-tertiary-container/90 text-on-surface font-display font-semibold gap-1.5 rounded-lg shadow-lg shadow-on-tertiary-container/20"
         >
           <AddCircleIcon size={16} />
-          <span className="hidden sm:inline">{UI_TEXTS.DASHBOARD.NEW_ANALYSIS}</span>
+          <span className="hidden sm:inline">
+            {UI_TEXTS.DASHBOARD.NEW_ANALYSIS}
+          </span>
         </Button>
       </div>
     </header>

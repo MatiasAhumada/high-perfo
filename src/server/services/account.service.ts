@@ -68,10 +68,22 @@ export const accountService = {
     });
   },
 
-  async createWithPlanAndUser(input: CreateAccountWithUserInput, adminUser: SessionUser) {
+  async createWithPlanAndUser(
+    input: CreateAccountWithUserInput,
+    adminUser: SessionUser,
+  ) {
     requireSuperAdmin(adminUser);
 
-    const { accountName, isOrganization, maxCoaches, maxAthletes, userEmail, userName, userPassword, userRole } = input;
+    const {
+      accountName,
+      isOrganization,
+      maxCoaches,
+      maxAthletes,
+      userEmail,
+      userName,
+      userPassword,
+      userRole,
+    } = input;
 
     const hashedPassword = await bcrypt.hash(userPassword, 12);
 
@@ -133,7 +145,8 @@ export const accountService = {
     }
     const updateData: Record<string, unknown> = {};
     if (dto.name) updateData.name = dto.name;
-    if (dto.isOrganization !== undefined) updateData.isOrganization = dto.isOrganization;
+    if (dto.isOrganization !== undefined)
+      updateData.isOrganization = dto.isOrganization;
     if (dto.planId) updateData.plan = { connect: { id: dto.planId } };
     return accountRepository.update(id, updateData);
   },

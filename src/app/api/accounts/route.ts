@@ -1,7 +1,11 @@
 import { NextRequest } from "next/server";
 import { requireAuth, requireSuperAdmin } from "@/lib/permissions";
 import { accountService } from "@/server/services/account.service";
-import { createAccountSchema, createAccountWithUserSchema, createAccountWithPlanSchema } from "@/schemas/account.schema";
+import {
+  createAccountSchema,
+  createAccountWithUserSchema,
+  createAccountWithPlanSchema,
+} from "@/schemas/account.schema";
 import apiErrorHandler, { ApiError } from "@/utils/handlers/apiError.handler";
 import { ERROR_MESSAGES } from "@/constants/error-messages.constant";
 import httpStatus from "http-status";
@@ -28,13 +32,19 @@ export async function POST(request: NextRequest) {
 
     const withUserParsed = createAccountWithUserSchema.safeParse(body);
     if (withUserParsed.success) {
-      const account = await accountService.createWithPlanAndUser(withUserParsed.data, user);
+      const account = await accountService.createWithPlanAndUser(
+        withUserParsed.data,
+        user,
+      );
       return Response.json(account, { status: httpStatus.CREATED });
     }
 
     const parsed = createAccountSchema.safeParse(body);
     if (!parsed.success) {
-      return Response.json({ error: parsed.error.flatten() }, { status: httpStatus.BAD_REQUEST });
+      return Response.json(
+        { error: parsed.error.flatten() },
+        { status: httpStatus.BAD_REQUEST },
+      );
     }
 
     const account = await accountService.create(parsed.data);

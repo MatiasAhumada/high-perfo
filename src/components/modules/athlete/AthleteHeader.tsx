@@ -22,7 +22,8 @@ export function AthleteHeader({ athlete }: AthleteHeaderProps) {
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-on-tertiary-container/10 border border-on-tertiary-container/20 flex items-center justify-center shrink-0">
           <span className="font-display font-bold text-lg sm:text-xl text-on-tertiary-container">
-            {athlete.firstName[0]}{athlete.lastName[0]}
+            {athlete.firstName[0]}
+            {athlete.lastName[0]}
           </span>
         </div>
         <div>
@@ -33,7 +34,9 @@ export function AthleteHeader({ athlete }: AthleteHeaderProps) {
             <span className="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant/40 text-xs text-on-surface-variant uppercase tracking-wider">
               {athlete.position}
             </span>
-            <span className="text-xs text-on-surface-variant/40 uppercase tracking-wider">{athlete.sport}</span>
+            <span className="text-xs text-on-surface-variant/40 uppercase tracking-wider">
+              {athlete.sport}
+            </span>
             <StatusBadge variant={athlete.active ? "active" : "inactive"} />
           </div>
         </div>
@@ -44,12 +47,16 @@ export function AthleteHeader({ athlete }: AthleteHeaderProps) {
           className="gap-2 font-display rounded-lg border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:border-outline-variant text-sm flex-1 sm:flex-none"
         >
           <StethoscopeIcon size={16} />
-          <span className="hidden sm:inline">{UI_TEXTS.ATHLETES.MEDICAL_HISTORY}</span>
+          <span className="hidden sm:inline">
+            {UI_TEXTS.ATHLETES.MEDICAL_HISTORY}
+          </span>
           <span className="sm:hidden">Historial</span>
         </Button>
         <Button className="gap-2 font-display rounded-lg bg-[#dc2626] hover:bg-[#b91c1c] text-slate-100 shadow-lg shadow-red-900/20 text-sm flex-1 sm:flex-none">
           <Edit02Icon size={16} />
-          <span className="hidden sm:inline">{UI_TEXTS.ATHLETES.EDIT_PROFILE}</span>
+          <span className="hidden sm:inline">
+            {UI_TEXTS.ATHLETES.EDIT_PROFILE}
+          </span>
           <span className="sm:hidden">Editar</span>
         </Button>
       </div>

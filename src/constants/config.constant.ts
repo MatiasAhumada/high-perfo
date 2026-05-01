@@ -10,4 +10,4 @@ export const CONFIG = {
   SMTP_USER: process.env.SMTP_USER,
   SMTP_PASS: process.env.SMTP_PASS,
   EMAIL_FROM: process.env.EMAIL_FROM,
-} as const
+} as const;
