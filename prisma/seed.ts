@@ -201,13 +201,19 @@ async function seedUsers() {
     { id: SEED_IDS.USER_SOLO_COACH, email: "coach@independiente.com", name: "Roberto Morales", role: Role.COACH, accountId: SEED_IDS.ACCOUNT_SOLO_COACH },
   ] as const
 
+  console.log('\n📧 USUARIOS CREADOS:')
+  console.log('━'.repeat(80))
+  console.log(`🔑 Contraseña universal: ${SEED_PASSWORD}\n`)
+
   for (const user of users) {
     await prisma.user.upsert({
       where: { id: user.id },
       update: { email: user.email, name: user.name, role: user.role, accountId: user.accountId, password: HASHED_PASSWORD },
       create: { id: user.id, email: user.email, name: user.name, role: user.role, accountId: user.accountId, password: HASHED_PASSWORD },
     })
+    console.log(`✅ ${user.email.padEnd(30)} | ${user.role.padEnd(12)} | ${user.name}`)
   }
+  console.log('━'.repeat(80) + '\n')
 }
 
 async function seedLinceAthletes() {

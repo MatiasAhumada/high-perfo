@@ -51,7 +51,9 @@ export function RoutineHeader({ onSendEmail }: RoutineHeaderProps) {
             className="gap-1.5 font-display rounded-lg border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:border-outline-variant text-xs"
           >
             <Pdf01Icon size={14} />
-            <span className="hidden sm:inline">{UI_TEXTS.ROUTINES.EXPORT_PDF}</span>
+            <span className="hidden sm:inline">
+              {UI_TEXTS.ROUTINES.EXPORT_PDF}
+            </span>
           </Button>
           <Button
             variant="outline"
@@ -59,7 +61,9 @@ export function RoutineHeader({ onSendEmail }: RoutineHeaderProps) {
             className="gap-1.5 font-display rounded-lg border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:border-outline-variant text-xs"
           >
             <TableIcon size={14} />
-            <span className="hidden sm:inline">{UI_TEXTS.ROUTINES.EXPORT_EXCEL}</span>
+            <span className="hidden sm:inline">
+              {UI_TEXTS.ROUTINES.EXPORT_EXCEL}
+            </span>
           </Button>
           <Button
             size="sm"
@@ -67,7 +71,9 @@ export function RoutineHeader({ onSendEmail }: RoutineHeaderProps) {
             className="bg-[#dc2626] hover:bg-[#b91c1c] text-slate-100 font-display gap-1.5 rounded-lg shadow-lg shadow-red-900/20 text-xs"
           >
             <SentIcon size={14} />
-            <span className="hidden sm:inline">{UI_TEXTS.ROUTINES.SEND_BY_EMAIL}</span>
+            <span className="hidden sm:inline">
+              {UI_TEXTS.ROUTINES.SEND_BY_EMAIL}
+            </span>
           </Button>
         </div>
       </div>

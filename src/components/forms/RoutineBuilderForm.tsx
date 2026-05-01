@@ -23,13 +23,17 @@ interface RoutineBuilderFormProps {
   onSubmit: (data: RoutineFormData, exercises: TemplateExerciseMock[]) => void;
 }
 
-const INPUT_CLASSES = "w-full bg-transparent border-b border-outline-variant/50 text-on-surface placeholder:text-on-surface-variant/30 focus:border-on-tertiary-container focus:outline-none pb-2 pt-4 text-sm font-body transition-colors";
+const INPUT_CLASSES =
+  "w-full bg-transparent border-b border-outline-variant/50 text-on-surface placeholder:text-on-surface-variant/30 focus:border-on-tertiary-container focus:outline-none pb-2 pt-4 text-sm font-body transition-colors";
 
 let nextExerciseId = 100;
 
-export function RoutineBuilderForm({ initialExercises, onSubmit }: RoutineBuilderFormProps) {
+export function RoutineBuilderForm({
+  initialExercises,
+  onSubmit,
+}: RoutineBuilderFormProps) {
   const [exercises, setExercises] = useState<TemplateExerciseMock[]>(
-    initialExercises ?? []
+    initialExercises ?? [],
   );
 
   const {
@@ -58,11 +62,13 @@ export function RoutineBuilderForm({ initialExercises, onSubmit }: RoutineBuilde
     setExercises((prev) => prev.filter((ex) => ex.id !== exerciseId));
   };
 
-  const updateExercise = (exerciseId: string, field: string, value: number | string) => {
+  const updateExercise = (
+    exerciseId: string,
+    field: string,
+    value: number | string,
+  ) => {
     setExercises((prev) =>
-      prev.map((ex) =>
-        ex.id === exerciseId ? { ...ex, [field]: value } : ex
-      )
+      prev.map((ex) => (ex.id === exerciseId ? { ...ex, [field]: value } : ex)),
     );
   };
 
@@ -73,15 +79,35 @@ export function RoutineBuilderForm({ initialExercises, onSubmit }: RoutineBuilde
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <div>
-        <label className="text-label-caps text-on-surface-variant/50 block mb-1">{UI_TEXTS.ROUTINES.ROUTINE_NAME}</label>
-        <input {...register("name")} className={INPUT_CLASSES} placeholder="Nombre de la rutina" />
-        {errors.name && <p className="text-on-tertiary-container text-xs mt-1">{errors.name.message}</p>}
+        <label className="text-label-caps text-on-surface-variant/50 block mb-1">
+          {UI_TEXTS.ROUTINES.ROUTINE_NAME}
+        </label>
+        <input
+          {...register("name")}
+          className={INPUT_CLASSES}
+          placeholder="Nombre de la rutina"
+        />
+        {errors.name && (
+          <p className="text-on-tertiary-container text-xs mt-1">
+            {errors.name.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label className="text-label-caps text-on-surface-variant/50 block mb-1">{UI_TEXTS.ROUTINES.ROUTINE_DESCRIPTION}</label>
-        <input {...register("description")} className={INPUT_CLASSES} placeholder="Descripción del protocolo" />
-        {errors.description && <p className="text-on-tertiary-container text-xs mt-1">{errors.description.message}</p>}
+        <label className="text-label-caps text-on-surface-variant/50 block mb-1">
+          {UI_TEXTS.ROUTINES.ROUTINE_DESCRIPTION}
+        </label>
+        <input
+          {...register("description")}
+          className={INPUT_CLASSES}
+          placeholder="Descripción del protocolo"
+        />
+        {errors.description && (
+          <p className="text-on-tertiary-container text-xs mt-1">
+            {errors.description.message}
+          </p>
+        )}
       </div>
 
       <div className="space-y-3">
@@ -95,7 +121,9 @@ export function RoutineBuilderForm({ initialExercises, onSubmit }: RoutineBuilde
               percent1RM={exercise.percent1RM}
               showAdvanced={exercise.advancedSettings}
               onRemove={() => removeExercise(exercise.id)}
-              onUpdate={(field, value) => updateExercise(exercise.id, field, value)}
+              onUpdate={(field, value) =>
+                updateExercise(exercise.id, field, value)
+              }
             />
           ))}
         </AnimatePresence>
@@ -112,7 +140,11 @@ export function RoutineBuilderForm({ initialExercises, onSubmit }: RoutineBuilde
       </div>
 
       <div className="flex justify-end gap-3 pt-2">
-        <Button type="submit" disabled={!isValid} className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display rounded-lg">
+        <Button
+          type="submit"
+          disabled={!isValid}
+          className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display rounded-lg"
+        >
           {UI_TEXTS.ACTIONS.SAVE}
         </Button>
       </div>

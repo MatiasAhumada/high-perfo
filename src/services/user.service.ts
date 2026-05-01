@@ -20,9 +20,12 @@ export const userClient = {
       password: string;
       role?: "ORG_ADMIN" | "COACH";
     },
-    accountId: string
+    accountId: string,
   ) {
-    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
+    const { data } = await axios.post(
+      `${API_ROUTES.USERS}?accountId=${accountId}`,
+      payload,
+    );
     return data;
   },
 
@@ -33,14 +36,19 @@ export const userClient = {
       password: string;
       role: "ORG_ADMIN" | "COACH";
     },
-    accountId: string
+    accountId: string,
   ) {
-    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
+    const { data } = await axios.post(
+      `${API_ROUTES.USERS}?accountId=${accountId}`,
+      payload,
+    );
     return data;
   },
 
   async updateStatus(userId: string, isActive: boolean) {
-    const { data } = await axios.patch(`${API_ROUTES.USERS}/${userId}`, { isActive });
+    const { data } = await axios.patch(`${API_ROUTES.USERS}/${userId}`, {
+      isActive,
+    });
     return data;
   },
 };

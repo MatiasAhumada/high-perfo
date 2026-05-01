@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
-import { API_LIMITS } from "@/constants/api-limits.constant"
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import { API_LIMITS } from "@/constants/api-limits.constant";
 
 const ATHLETE_SELECT = {
   id: true,
@@ -11,31 +11,31 @@ const ATHLETE_SELECT = {
   accountId: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Prisma.AthleteSelect
+} satisfies Prisma.AthleteSelect;
 
 type AthleteFindOptions = {
-  search?: string
-  page?: number
-  pageSize?: number
-  orderBy?: Prisma.AthleteOrderByWithRelationInput
-}
+  search?: string;
+  page?: number;
+  pageSize?: number;
+  orderBy?: Prisma.AthleteOrderByWithRelationInput;
+};
 
 export const athleteRepository = {
   async findByAccountId(accountId: string, options: AthleteFindOptions = {}) {
-    const page = options.page ?? 1
-    const pageSize = options.pageSize ?? API_LIMITS.DEFAULT_PAGE_SIZE
-    const skip = (page - 1) * pageSize
+    const page = options.page ?? 1;
+    const pageSize = options.pageSize ?? API_LIMITS.DEFAULT_PAGE_SIZE;
+    const skip = (page - 1) * pageSize;
 
     const where: Prisma.AthleteWhereInput = {
       accountId,
       deletedAt: null,
-    }
+    };
 
     if (options.search) {
       where.OR = [
         { firstName: { contains: options.search, mode: "insensitive" } },
         { lastName: { contains: options.search, mode: "insensitive" } },
-      ]
+      ];
     }
 
     const [athletes, total] = await Promise.all([
@@ -47,16 +47,16 @@ export const athleteRepository = {
         take: pageSize,
       }),
       prisma.athlete.count({ where }),
-    ])
+    ]);
 
-    return { athletes, total, page, pageSize }
+    return { athletes, total, page, pageSize };
   },
 
   async findById(id: string) {
     return prisma.athlete.findUnique({
       where: { id, deletedAt: null },
       select: ATHLETE_SELECT,
-    })
+    });
   },
 
   async findByIdWithLatestAssessment(id: string) {
@@ -72,14 +72,14 @@ export const athleteRepository = {
           },
         },
       },
-    })
+    });
   },
 
   async create(data: Prisma.AthleteCreateInput) {
     return prisma.athlete.create({
       data,
       select: ATHLETE_SELECT,
-    })
+    });
   },
 
   async update(id: string, data: Prisma.AthleteUpdateInput) {
@@ -87,7 +87,7 @@ export const athleteRepository = {
       where: { id },
       data,
       select: ATHLETE_SELECT,
-    })
+    });
   },
 
   async softDelete(id: string) {
@@ -95,12 +95,12 @@ export const athleteRepository = {
       where: { id },
       data: { deletedAt: new Date() },
       select: { id: true },
-    })
+    });
   },
 
   async countByAccountId(accountId: string) {
     return prisma.athlete.count({
       where: { accountId, deletedAt: null },
-    })
+    });
   },
-}
+};

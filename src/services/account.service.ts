@@ -27,7 +27,11 @@ export const accountClient = {
   },
 };
 
-function buildUserParams(accountId?: string, search?: string, isActive?: boolean): string {
+function buildUserParams(
+  accountId?: string,
+  search?: string,
+  isActive?: boolean,
+): string {
   const params = new URLSearchParams();
   if (accountId) params.set("accountId", accountId);
   if (search) params.set("search", search);
@@ -48,7 +52,9 @@ export const userClient = {
     params.set("global", "true");
     if (search) params.set("search", search);
     if (isActive !== undefined) params.set("isActive", String(isActive));
-    const { data } = await axios.get(`${API_ROUTES.USERS}?${params.toString()}`);
+    const { data } = await axios.get(
+      `${API_ROUTES.USERS}?${params.toString()}`,
+    );
     return data;
   },
 
@@ -59,9 +65,12 @@ export const userClient = {
       password: string;
       role?: "ORG_ADMIN" | "COACH";
     },
-    accountId: string
+    accountId: string,
   ) {
-    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
+    const { data } = await axios.post(
+      `${API_ROUTES.USERS}?accountId=${accountId}`,
+      payload,
+    );
     return data;
   },
 
@@ -72,14 +81,19 @@ export const userClient = {
       password: string;
       role: "ORG_ADMIN" | "COACH";
     },
-    accountId: string
+    accountId: string,
   ) {
-    const { data } = await axios.post(`${API_ROUTES.USERS}?accountId=${accountId}`, payload);
+    const { data } = await axios.post(
+      `${API_ROUTES.USERS}?accountId=${accountId}`,
+      payload,
+    );
     return data;
   },
 
   async updateStatus(userId: string, isActive: boolean) {
-    const { data } = await axios.patch(`${API_ROUTES.USERS}/${userId}`, { isActive });
+    const { data } = await axios.patch(`${API_ROUTES.USERS}/${userId}`, {
+      isActive,
+    });
     return data;
   },
 };

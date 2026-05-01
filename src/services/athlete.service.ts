@@ -26,7 +26,10 @@ export const athleteService = {
   },
 
   async update(id: string, dto: UpdateAthleteDto) {
-    const { data } = await clientAxios.patch(`${API_ROUTES.ATHLETES}/${id}`, dto);
+    const { data } = await clientAxios.patch(
+      `${API_ROUTES.ATHLETES}/${id}`,
+      dto,
+    );
     return data;
   },
 

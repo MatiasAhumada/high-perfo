@@ -1,6 +1,10 @@
 "use client";
 
-import { Payment01Icon, UserGroupIcon, RunningShoesIcon } from "hugeicons-react";
+import {
+  Payment01Icon,
+  UserGroupIcon,
+  RunningShoesIcon,
+} from "hugeicons-react";
 import { MetricCard } from "@/components/common";
 import { useStats } from "@/hooks";
 import type { StatItemMock } from "@/mocks";

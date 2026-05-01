@@ -25,12 +25,24 @@ const TOOLTIP_STYLE = {
   padding: "8px 12px",
 };
 
-export function TrendLine({ data, color = "#f8171a", height = 120 }: TrendLineProps) {
+export function TrendLine({
+  data,
+  color = "#f8171a",
+  height = 120,
+}: TrendLineProps) {
   return (
     <div className="w-full" style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 4, right: 4, left: -24, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#46464c" vertical={false} opacity={0.15} />
+        <LineChart
+          data={data}
+          margin={{ top: 4, right: 4, left: -24, bottom: 0 }}
+        >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#46464c"
+            vertical={false}
+            opacity={0.15}
+          />
           <XAxis dataKey="label" hide />
           <YAxis hide domain={["dataMin - 2", "dataMax + 2"]} />
           <Tooltip contentStyle={TOOLTIP_STYLE} />

@@ -6,7 +6,10 @@ import { ERROR_MESSAGES } from "@/constants/error-messages.constant";
 import { ROLES } from "@/constants/roles.constant";
 import httpStatus from "http-status";
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const { id } = await params;
     const user = await requireAuth();
@@ -23,7 +26,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const { id } = await params;
     const user = await requireAuth();
@@ -35,7 +41,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (typeof isActive !== "boolean") {
       return Response.json(
         { error: "isActive must be a boolean" },
-        { status: httpStatus.BAD_REQUEST }
+        { status: httpStatus.BAD_REQUEST },
       );
     }
 

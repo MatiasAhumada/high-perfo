@@ -11,7 +11,8 @@ export const toolsMock: ToolMock[] = [
   {
     id: "soft-tissue",
     name: "Tejido Blando",
-    description: "Protocolos de liberación miofascial, automasaje y trabajo de tejido blando para recuperación y preparación",
+    description:
+      "Protocolos de liberación miofascial, automasaje y trabajo de tejido blando para recuperación y preparación",
     icon: "HealingIcon",
     active: true,
     category: "Recuperación",
@@ -19,7 +20,8 @@ export const toolsMock: ToolMock[] = [
   {
     id: "plyometry",
     name: "Pliometría",
-    description: "Secuencias de entrenamiento pliométrico con progresión de impacto y control de volumen",
+    description:
+      "Secuencias de entrenamiento pliométrico con progresión de impacto y control de volumen",
     icon: "ArrowUpIcon",
     active: true,
     category: "Potencia",
@@ -27,7 +29,8 @@ export const toolsMock: ToolMock[] = [
   {
     id: "mobility",
     name: "Movilidad",
-    description: "Rutinas de movilidad articular y flexibilidad dinámica para optimizar el rango de movimiento",
+    description:
+      "Rutinas de movilidad articular y flexibilidad dinámica para optimizar el rango de movimiento",
     icon: "AccessiblityIcon",
     active: true,
     category: "Prevención",
@@ -35,7 +38,8 @@ export const toolsMock: ToolMock[] = [
   {
     id: "climate",
     name: "Clima",
-    description: "Ajuste de cargas por condiciones ambientales: temperatura, humedad y altitud",
+    description:
+      "Ajuste de cargas por condiciones ambientales: temperatura, humedad y altitud",
     icon: "WeatherIcon",
     active: false,
     category: "Ambiental",
@@ -43,7 +47,8 @@ export const toolsMock: ToolMock[] = [
   {
     id: "gps",
     name: "GPS y Distancias",
-    description: "Integración de datos GPS para monitorización de carga externa, distancias y velocidad en campo",
+    description:
+      "Integración de datos GPS para monitorización de carga externa, distancias y velocidad en campo",
     icon: "LocationIcon",
     active: false,
     category: "Monitorización",
@@ -51,7 +56,8 @@ export const toolsMock: ToolMock[] = [
   {
     id: "asymmetry-test",
     name: "Test de Asimetría",
-    description: "Protocolos de evaluación bilateral para detectar desequilibrios y riesgos de lesión",
+    description:
+      "Protocolos de evaluación bilateral para detectar desequilibrios y riesgos de lesión",
     icon: "BalanceIcon",
     active: true,
     category: "Evaluación",

@@ -4,14 +4,14 @@ export const API_LIMITS = {
   MIN_PAGE_SIZE: 1,
   DEFAULT_SEARCH_DEBOUNCE_MS: 300,
   MAX_SEARCH_LENGTH: 200,
-} as const
+} as const;
 
 export const COACHES_TABLE_COLUMNS = {
   NAME_MIN_LENGTH: 2,
   NAME_MAX_LENGTH: 100,
   EMAIL_MAX_LENGTH: 255,
   SPECIALTY_MAX_LENGTH: 100,
-} as const
+} as const;
 
 export const ATHLETE_FORM_LIMITS = {
   FIRST_NAME_MIN_LENGTH: 2,
@@ -19,7 +19,7 @@ export const ATHLETE_FORM_LIMITS = {
   LAST_NAME_MIN_LENGTH: 2,
   LAST_NAME_MAX_LENGTH: 50,
   POSITION_MAX_LENGTH: 10,
-} as const
+} as const;
 
 export const ROUTINE_FORM_LIMITS = {
   ROUTINE_NAME_MIN_LENGTH: 3,
@@ -31,16 +31,16 @@ export const ROUTINE_FORM_LIMITS = {
   MAX_REPS: 100,
   MAX_INTENSITY_PERCENT: 120,
   MIN_INTENSITY_PERCENT: 1,
-} as const
+} as const;
 
 export const AUTH_LIMITS = {
   SALT_ROUNDS: 12,
   PASSWORD_MIN_LENGTH: 8,
-} as const
+} as const;
 
 export const METRIC_VALUE_LIMITS = {
   MIN_RAW_VALUE: 0,
   MAX_RAW_VALUE: 10000,
   MIN_CALCULATED_VALUE: -10000,
   MAX_CALCULATED_VALUE: 10000,
-} as const
+} as const;

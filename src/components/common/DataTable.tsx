@@ -61,7 +61,9 @@ export function DataTable<T>({
             {title}
           </h3>
           {subtitle && (
-            <p className="text-on-surface-variant text-sm mt-1 hidden sm:block">{subtitle}</p>
+            <p className="text-on-surface-variant text-sm mt-1 hidden sm:block">
+              {subtitle}
+            </p>
           )}
         </div>
         {actions && (
@@ -73,7 +75,10 @@ export function DataTable<T>({
         {onSearch && (
           <div className="p-3 sm:p-5 border-b border-outline-variant/20">
             <div className="relative flex-1 w-full sm:max-w-md">
-              <Search01Icon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50" />
+              <Search01Icon
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50"
+              />
               <Input
                 placeholder={searchPlaceholder}
                 onChange={(e) => onSearch(e.target.value)}
@@ -100,7 +105,10 @@ export function DataTable<T>({
             <tbody className="text-sm sm:text-base text-on-surface divide-y divide-outline-variant/20">
               {loading ? (
                 <tr>
-                  <td colSpan={columns.length} className="py-8 text-center text-on-surface-variant/50 font-medium">
+                  <td
+                    colSpan={columns.length}
+                    className="py-8 text-center text-on-surface-variant/50 font-medium"
+                  >
                     <div className="flex items-center justify-center gap-3">
                       <div className="w-5 h-5 border-2 border-on-tertiary-container border-t-transparent rounded-full animate-spin" />
                       <span className="hidden sm:inline">Cargando...</span>
@@ -109,7 +117,10 @@ export function DataTable<T>({
                 </tr>
               ) : data.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length} className="py-8 text-center text-on-surface-variant/50 font-medium">
+                  <td
+                    colSpan={columns.length}
+                    className="py-8 text-center text-on-surface-variant/50 font-medium"
+                  >
                     {emptyMessage}
                   </td>
                 </tr>
@@ -135,7 +146,10 @@ export function DataTable<T>({
                       >
                         {column.render
                           ? column.render(item)
-                          : String((item as Record<string, unknown>)[column.key] ?? "")}
+                          : String(
+                              (item as Record<string, unknown>)[column.key] ??
+                                "",
+                            )}
                       </td>
                     ))}
                   </motion.tr>

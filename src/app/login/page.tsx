@@ -1,42 +1,43 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { ROUTES } from "@/constants/routes"
-import { UI_TEXTS } from "@/constants/ui-texts.constant"
-import { Mail01Icon, LockPasswordIcon } from "hugeicons-react"
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
+import { UI_TEXTS } from "@/constants/ui-texts.constant";
+import { Mail01Icon, LockPasswordIcon } from "hugeicons-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setErrorMessage("")
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage("");
 
-    try {
-      await signIn("credentials", {
-        email,
-        password,
-        redirect: true,
-        callbackUrl: ROUTES.HOME,
-      })
-    } catch (error) {
-      setErrorMessage(UI_TEXTS.FORM_ERRORS.REQUIRED)
-      setIsLoading(false)
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setErrorMessage("Credenciales inválidas");
+      setIsLoading(false);
+    } else {
+      window.location.href = ROUTES.HOME;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-surface relative overflow-hidden px-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(248,23,26,0.08)_0%,_transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(194,198,215,0.03)_0%,_transparent_50%)]" />
-      
+
       <div className="absolute top-20 right-20 w-72 h-72 bg-on-tertiary-container/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-20 left-20 w-96 h-96 bg-secondary-brand/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -120,9 +121,7 @@ export default function LoginPage() {
                 animate={{ opacity: 1, height: "auto" }}
                 className="bg-error-container/20 border border-error/30 rounded px-4 py-3"
               >
-                <p className="text-sm text-error font-body">
-                  {errorMessage}
-                </p>
+                <p className="text-sm text-error font-body">{errorMessage}</p>
               </motion.div>
             )}
 
@@ -155,5 +154,5 @@ export default function LoginPage() {
         </motion.div>
       </motion.div>
     </div>
-  )
+  );
 }

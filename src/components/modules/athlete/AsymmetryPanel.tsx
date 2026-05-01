@@ -33,7 +33,9 @@ export function AsymmetryPanel({ assessment }: AsymmetryPanelProps) {
         <span className="text-3xl sm:text-4xl font-display text-on-tertiary-container tracking-tight">
           {assessment.asiIndex}%
         </span>
-        <span className="text-xs text-on-surface-variant uppercase tracking-wider">{UI_TEXTS.METRICS.ASI}</span>
+        <span className="text-xs text-on-surface-variant uppercase tracking-wider">
+          {UI_TEXTS.METRICS.ASI}
+        </span>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center">

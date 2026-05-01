@@ -37,8 +37,12 @@ export function GenericModal({
 }: GenericModalProps) {
   const isDark = variant === "dark";
   const bgClass = isDark ? "bg-surface-container-low" : "bg-surface-container";
-  const headerBgClass = isDark ? "bg-surface-container-lowest" : "bg-surface-container-low";
-  const footerBgClass = isDark ? "bg-surface-container-lowest" : "bg-surface-container-low";
+  const headerBgClass = isDark
+    ? "bg-surface-container-lowest"
+    : "bg-surface-container-low";
+  const footerBgClass = isDark
+    ? "bg-surface-container-lowest"
+    : "bg-surface-container-low";
 
   return (
     <AnimatePresence>
@@ -56,18 +60,25 @@ export function GenericModal({
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: "spring" as const, stiffness: 300, damping: 30 }}
+            transition={{
+              type: "spring" as const,
+              stiffness: 300,
+              damping: 30,
+            }}
             className="fixed inset-0 sm:inset-4 md:inset-8 lg:inset-auto lg:top-1/2 lg:-translate-y-1/2 lg:left-1/2 lg:-translate-x-1/2 z-50 flex items-start sm:items-center justify-center p-2 sm:p-4 pointer-events-none"
           >
             <div
               className={cn(
                 bgClass,
                 "border border-outline-variant/30 rounded-lg sm:rounded-xl shadow-2xl w-full h-full sm:h-auto sm:max-h-[85vh] overflow-hidden flex flex-col pointer-events-auto",
-                SIZE_CLASSES[size]
+                SIZE_CLASSES[size],
               )}
             >
               <div
-                className={cn("flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b border-outline-variant/20 shrink-0", headerBgClass)}
+                className={cn(
+                  "flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b border-outline-variant/20 shrink-0",
+                  headerBgClass,
+                )}
               >
                 <div className="pr-8 sm:pr-0 min-w-0">
                   <h2 className="text-base sm:text-lg font-display font-semibold text-on-surface truncate">
@@ -93,7 +104,10 @@ export function GenericModal({
               </div>
               {footer && (
                 <div
-                  className={cn("flex justify-end gap-2 px-4 py-3 sm:px-6 sm:py-4 border-t border-outline-variant/20 shrink-0", footerBgClass)}
+                  className={cn(
+                    "flex justify-end gap-2 px-4 py-3 sm:px-6 sm:py-4 border-t border-outline-variant/20 shrink-0",
+                    footerBgClass,
+                  )}
                 >
                   {footer}
                 </div>

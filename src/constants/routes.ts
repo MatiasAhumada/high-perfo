@@ -5,21 +5,61 @@ export const ROUTES = {
   ROUTINES: "/rutinas",
   TOOLS: "/herramientas",
   SETTINGS: "/ajustes",
-  USUARIOS: "/usuarios",
+  COACHES: "/coaches",
 } as const;
 
 export const SIDEBAR_ITEMS = [
-  { key: "dashboard", label: "Dashboard", path: "/", icon: "DashboardIcon" },
-  { key: "athletes", label: "Atletas", path: "/atletas", icon: "DirectionsRunIcon" },
+  {
+    key: "athletes",
+    label: "Atletas",
+    path: "/atletas",
+    icon: "DirectionsRunIcon",
+  },
   { key: "routines", label: "Rutinas", path: "/rutinas", icon: "FitnessIcon" },
-  { key: "tools", label: "Herramientas", path: "/herramientas", icon: "ToolboxIcon" },
-  { key: "settings", label: "Ajustes", path: "/ajustes", icon: "SettingsIcon" },
-  { key: "usuarios", label: "Entrenadores", path: "/usuarios", icon: "UserGroupIcon" },
+  {
+    key: "tools",
+    label: "Herramientas",
+    path: "/herramientas",
+    icon: "ToolboxIcon",
+  },
 ] as const;
 
 export const SIDEBAR_ITEMS_ADMIN = [
-  { key: "dashboard", label: "Dashboard", path: "/", icon: "DashboardIcon" },
-  { key: "usuarios", label: "Usuarios", path: "/usuarios", icon: "UserGroupIcon" },
+  {
+    key: "coaches",
+    label: "Entrenadores",
+    path: "/coaches",
+    icon: "UserGroupIcon",
+  },
+  {
+    key: "athletes",
+    label: "Atletas",
+    path: "/atletas",
+    icon: "DirectionsRunIcon",
+  },
+  { key: "settings", label: "Ajustes", path: "/ajustes", icon: "SettingsIcon" },
+] as const;
+
+export const SIDEBAR_ITEMS_SUPER_ADMIN = [
+  {
+    key: "coaches",
+    label: "Entrenadores",
+    path: "/coaches",
+    icon: "UserGroupIcon",
+  },
+  {
+    key: "athletes",
+    label: "Atletas",
+    path: "/atletas",
+    icon: "DirectionsRunIcon",
+  },
+  { key: "routines", label: "Rutinas", path: "/rutinas", icon: "FitnessIcon" },
+  {
+    key: "tools",
+    label: "Herramientas",
+    path: "/herramientas",
+    icon: "ToolboxIcon",
+  },
   { key: "settings", label: "Ajustes", path: "/ajustes", icon: "SettingsIcon" },
 ] as const;
 

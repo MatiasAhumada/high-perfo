@@ -14,7 +14,12 @@ interface ExerciseListProps {
   onUpdate: (id: string, field: string, value: number | string) => void;
 }
 
-export function ExerciseList({ exercises, onAdd, onRemove, onUpdate }: ExerciseListProps) {
+export function ExerciseList({
+  exercises,
+  onAdd,
+  onRemove,
+  onUpdate,
+}: ExerciseListProps) {
   return (
     <div className="space-y-4">
       <AnimatePresence>

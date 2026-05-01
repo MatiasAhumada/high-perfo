@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { RoutineHeader, ExerciseList, ToolboxSection } from "@/components/modules/routines";
+import {
+  RoutineHeader,
+  ExerciseList,
+  ToolboxSection,
+} from "@/components/modules/routines";
 import { GenericModal } from "@/components/common";
 import { SendRoutineForm } from "@/components/forms";
 import { useRoutines, useTools, useAthletes } from "@/hooks";
@@ -16,11 +20,11 @@ export default function RutinasPage() {
   const { athletes } = useAthletes();
   const [sendModalOpen, setSendModalOpen] = useState(false);
   const [selectedToolIds, setSelectedToolIds] = useState<string[]>(
-    routines[0]?.toolboxItems ?? []
+    routines[0]?.toolboxItems ?? [],
   );
 
   const [exercises, setExercises] = useState<TemplateExerciseMock[]>(
-    routines[0]?.exercises ?? []
+    routines[0]?.exercises ?? [],
   );
 
   const addExercise = () => {
@@ -39,15 +43,21 @@ export default function RutinasPage() {
     setExercises((prev) => prev.filter((ex) => ex.id !== id));
   };
 
-  const updateExercise = (id: string, field: string, value: number | string) => {
+  const updateExercise = (
+    id: string,
+    field: string,
+    value: number | string,
+  ) => {
     setExercises((prev) =>
-      prev.map((ex) => (ex.id === id ? { ...ex, [field]: value } : ex))
+      prev.map((ex) => (ex.id === id ? { ...ex, [field]: value } : ex)),
     );
   };
 
   const toggleTool = (toolId: string) => {
     setSelectedToolIds((prev) =>
-      prev.includes(toolId) ? prev.filter((t) => t !== toolId) : [...prev, toolId]
+      prev.includes(toolId)
+        ? prev.filter((t) => t !== toolId)
+        : [...prev, toolId],
     );
   };
 

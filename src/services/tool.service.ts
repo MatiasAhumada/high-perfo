@@ -13,17 +13,25 @@ interface UpdateToolData {
 
 export const toolService = {
   async findByRoutine(routineId: string) {
-    const { data } = await clientAxios.get(`${API_ROUTES.ROUTINES}/${routineId}/tools`);
+    const { data } = await clientAxios.get(
+      `${API_ROUTES.ROUTINES}/${routineId}/tools`,
+    );
     return data;
   },
 
   async create(routineId: string, dto: CreateToolData) {
-    const { data } = await clientAxios.post(`${API_ROUTES.ROUTINES}/${routineId}/tools`, dto);
+    const { data } = await clientAxios.post(
+      `${API_ROUTES.ROUTINES}/${routineId}/tools`,
+      dto,
+    );
     return data;
   },
 
   async update(toolId: string, dto: UpdateToolData) {
-    const { data } = await clientAxios.patch(`${API_ROUTES.TOOLS}/${toolId}`, dto);
+    const { data } = await clientAxios.patch(
+      `${API_ROUTES.TOOLS}/${toolId}`,
+      dto,
+    );
     return data;
   },
 };

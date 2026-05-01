@@ -35,8 +35,8 @@ export function useTools(): UseToolsReturn {
   const toggleTool = (toolId: string) => {
     setTools((prev) =>
       prev.map((tool) =>
-        tool.id === toolId ? { ...tool, active: !tool.active } : tool
-      )
+        tool.id === toolId ? { ...tool, active: !tool.active } : tool,
+      ),
     );
   };
 

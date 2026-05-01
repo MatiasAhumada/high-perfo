@@ -29,20 +29,41 @@ export function ForceVelocityCurve({ data }: ForceVelocityCurveProps) {
   return (
     <div className="w-full h-[250px] sm:h-[280px] lg:h-[320px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 12, right: 8, left: -16, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#46464c" vertical={false} opacity={0.15} />
+        <LineChart
+          data={data}
+          margin={{ top: 12, right: 8, left: -16, bottom: 8 }}
+        >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#46464c"
+            vertical={false}
+            opacity={0.15}
+          />
           <XAxis
             dataKey="velocity"
             tick={{ fill: "#919096", fontSize: 11 }}
             axisLine={{ stroke: "#46464c" }}
             tickLine={false}
-            label={{ value: "Velocidad (m/s)", position: "insideBottomRight", offset: -4, fill: "#919096", fontSize: 11 }}
+            label={{
+              value: "Velocidad (m/s)",
+              position: "insideBottomRight",
+              offset: -4,
+              fill: "#919096",
+              fontSize: 11,
+            }}
           />
           <YAxis
             tick={{ fill: "#919096", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
-            label={{ value: "Fuerza (N)", angle: -90, position: "insideTopLeft", offset: 8, fill: "#919096", fontSize: 11 }}
+            label={{
+              value: "Fuerza (N)",
+              angle: -90,
+              position: "insideTopLeft",
+              offset: 8,
+              fill: "#919096",
+              fontSize: 11,
+            }}
             domain={[0, "dataMax + 200"]}
           />
           <Tooltip contentStyle={TOOLTIP_STYLE} />
@@ -61,7 +82,13 @@ export function ForceVelocityCurve({ data }: ForceVelocityCurveProps) {
             stroke="#f8171a"
             strokeWidth={2.5}
             dot={{ fill: "#f8171a", r: 3, strokeWidth: 0 }}
-            activeDot={{ fill: "#f8171a", r: 6, stroke: "#f8171a", strokeWidth: 2, strokeOpacity: 0.3 }}
+            activeDot={{
+              fill: "#f8171a",
+              r: 6,
+              stroke: "#f8171a",
+              strokeWidth: 2,
+              strokeOpacity: 0.3,
+            }}
             name="Actual"
           />
         </LineChart>

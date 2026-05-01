@@ -30,4 +30,4 @@ export const ERROR_MESSAGES = {
   ROUTINE_ALREADY_COMPLETED: "La rutina ya fue completada",
   CANNOT_ASSIGN_ROUTINE: "No se puede asignar la rutina al atleta",
   EMAIL_SEND_FAILED: "Error al enviar el correo electrónico",
-} as const
+} as const;

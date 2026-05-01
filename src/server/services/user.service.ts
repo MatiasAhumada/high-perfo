@@ -65,7 +65,12 @@ export const userService = {
     return userRepository.updateActiveStatus(id, isActive);
   },
 
-  async findAll(accountId: string, user: SessionUser, search?: string, isActive?: boolean) {
+  async findAll(
+    accountId: string,
+    user: SessionUser,
+    search?: string,
+    isActive?: boolean,
+  ) {
     requireAccountAccess(user, accountId);
     return userRepository.findAll(accountId, search, isActive);
   },
@@ -75,7 +80,11 @@ export const userService = {
     return userRepository.findAllGlobal(search, isActive);
   },
 
-  async createCoach(dto: { email: string; name: string; password: string }, accountId: string, user: SessionUser) {
+  async createCoach(
+    dto: { email: string; name: string; password: string },
+    accountId: string,
+    user: SessionUser,
+  ) {
     requireAccountAccess(user, accountId);
     const account = await accountRepository.findByIdWithPlan(accountId);
     if (!account) {
@@ -98,7 +107,10 @@ export const userService = {
         message: ERROR_MESSAGES.DUPLICATE_EMAIL,
       });
     }
-    const hashedPassword = await bcrypt.hash(dto.password, AUTH_LIMITS.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(
+      dto.password,
+      AUTH_LIMITS.SALT_ROUNDS,
+    );
     return userRepository.create({
       email: dto.email,
       name: dto.name,
@@ -112,7 +124,7 @@ export const userService = {
     dto: { email: string; name: string; password: string },
     accountId: string,
     role: Role,
-    adminUser: SessionUser
+    adminUser: SessionUser,
   ) {
     requireAccountAccess(adminUser, accountId);
 
@@ -146,7 +158,10 @@ export const userService = {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(dto.password, AUTH_LIMITS.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(
+      dto.password,
+      AUTH_LIMITS.SALT_ROUNDS,
+    );
     return userRepository.create({
       email: dto.email,
       name: dto.name,

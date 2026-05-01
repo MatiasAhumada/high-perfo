@@ -11,8 +11,13 @@ interface SendRoutineFormProps {
   routineName: string;
 }
 
-export function SendRoutineForm({ athletes, routineName }: SendRoutineFormProps) {
-  const [selectedAthletes, setSelectedAthletes] = useState<Set<string>>(new Set());
+export function SendRoutineForm({
+  athletes,
+  routineName,
+}: SendRoutineFormProps) {
+  const [selectedAthletes, setSelectedAthletes] = useState<Set<string>>(
+    new Set(),
+  );
 
   const toggleAthlete = useCallback((id: string) => {
     setSelectedAthletes((prev: Set<string>) => {
@@ -35,9 +40,14 @@ export function SendRoutineForm({ athletes, routineName }: SendRoutineFormProps)
   return (
     <div className="space-y-5 sm:space-y-6">
       <div>
-        <p className="text-[10px] sm:text-xs text-on-surface-variant/50 mb-2">{UI_TEXTS.SEND_ROUTINE.SELECT_ATHLETES}</p>
+        <p className="text-[10px] sm:text-xs text-on-surface-variant/50 mb-2">
+          {UI_TEXTS.SEND_ROUTINE.SELECT_ATHLETES}
+        </p>
         <p className="text-sm text-on-surface-variant/70 mb-4">
-          Rutina: <span className="text-on-surface font-display font-medium">{routineName}</span>
+          Rutina:{" "}
+          <span className="text-on-surface font-display font-medium">
+            {routineName}
+          </span>
         </p>
       </div>
 

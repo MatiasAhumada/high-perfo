@@ -10,17 +10,27 @@ interface TemplateSearchParams {
 interface UpdateTemplateData {
   name?: string;
   description?: string;
-  exercises?: { name: string; order: number; sets: number; reps: number; intensityPercent?: number }[];
+  exercises?: {
+    name: string;
+    order: number;
+    sets: number;
+    reps: number;
+    intensityPercent?: number;
+  }[];
 }
 
 export const templateService = {
   async findAll(params: TemplateSearchParams) {
-    const { data } = await clientAxios.get(API_ROUTES.ROUTINE_TEMPLATES, { params });
+    const { data } = await clientAxios.get(API_ROUTES.ROUTINE_TEMPLATES, {
+      params,
+    });
     return data;
   },
 
   async findById(id: string) {
-    const { data } = await clientAxios.get(`${API_ROUTES.ROUTINE_TEMPLATES}/${id}`);
+    const { data } = await clientAxios.get(
+      `${API_ROUTES.ROUTINE_TEMPLATES}/${id}`,
+    );
     return data;
   },
 
@@ -30,12 +40,17 @@ export const templateService = {
   },
 
   async update(id: string, dto: UpdateTemplateData) {
-    const { data } = await clientAxios.patch(`${API_ROUTES.ROUTINE_TEMPLATES}/${id}`, dto);
+    const { data } = await clientAxios.patch(
+      `${API_ROUTES.ROUTINE_TEMPLATES}/${id}`,
+      dto,
+    );
     return data;
   },
 
   async remove(id: string) {
-    const { data } = await clientAxios.delete(`${API_ROUTES.ROUTINE_TEMPLATES}/${id}`);
+    const { data } = await clientAxios.delete(
+      `${API_ROUTES.ROUTINE_TEMPLATES}/${id}`,
+    );
     return data;
   },
 };

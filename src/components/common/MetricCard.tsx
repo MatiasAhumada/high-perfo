@@ -18,7 +18,13 @@ interface MetricCardProps {
   delay?: number;
 }
 
-const TREND_CONFIG: Record<TrendDirection, { icon: React.ComponentType<{ size?: number; className?: string }>; colorClass: string }> = {
+const TREND_CONFIG: Record<
+  TrendDirection,
+  {
+    icon: React.ComponentType<{ size?: number; className?: string }>;
+    colorClass: string;
+  }
+> = {
   up: { icon: ArrowUp01Icon, colorClass: "text-[#4ade80]" },
   down: { icon: ArrowDown01Icon, colorClass: "text-on-tertiary-container" },
   stable: { icon: EqualSignIcon, colorClass: "text-secondary" },
@@ -45,18 +51,22 @@ export function MetricCard({
       transition={{ duration: 0.4, delay, ease: "easeOut" }}
       className={cn(
         "relative overflow-hidden rounded-xl bg-surface-container border border-outline-variant/30 p-5 sm:p-6 group hover:border-outline-variant/60 transition-colors",
-        className
+        className,
       )}
     >
       <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-on-tertiary-container/5 rounded-full blur-2xl group-hover:bg-on-tertiary-container/10 transition-colors pointer-events-none" />
 
       <div className="flex justify-between items-start mb-3 sm:mb-4 relative z-10">
-        <p className="text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-wider">{label}</p>
+        <p className="text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-wider">
+          {label}
+        </p>
         {icon && <span className="text-on-tertiary-container">{icon}</span>}
       </div>
 
       <div className="flex items-baseline gap-2 relative z-10">
-        <span className="text-2xl sm:text-3xl lg:text-4xl font-display text-on-surface leading-none">{value}</span>
+        <span className="text-2xl sm:text-3xl lg:text-4xl font-display text-on-surface leading-none">
+          {value}
+        </span>
         {unit && <span className="text-sm text-secondary-brand">{unit}</span>}
       </div>
 
@@ -67,7 +77,9 @@ export function MetricCard({
             {trendValue}
           </span>
           {trendDescription && (
-            <span className="text-outline text-xs sm:text-sm hidden sm:inline">{trendDescription}</span>
+            <span className="text-outline text-xs sm:text-sm hidden sm:inline">
+              {trendDescription}
+            </span>
           )}
         </div>
       )}

@@ -17,7 +17,10 @@ interface UpdateRoutineStatusData {
 
 export const routineService = {
   async findByAthlete(athleteId: string, params: RoutineByAthleteParams) {
-    const { data } = await clientAxios.get(`${API_ROUTES.ATHLETES}/${athleteId}/routines`, { params });
+    const { data } = await clientAxios.get(
+      `${API_ROUTES.ATHLETES}/${athleteId}/routines`,
+      { params },
+    );
     return data;
   },
 
@@ -27,17 +30,25 @@ export const routineService = {
   },
 
   async assign(athleteId: string, dto: AssignRoutineData) {
-    const { data } = await clientAxios.post(`${API_ROUTES.ATHLETES}/${athleteId}/routines`, dto);
+    const { data } = await clientAxios.post(
+      `${API_ROUTES.ATHLETES}/${athleteId}/routines`,
+      dto,
+    );
     return data;
   },
 
   async updateStatus(id: string, dto: UpdateRoutineStatusData) {
-    const { data } = await clientAxios.patch(`${API_ROUTES.ROUTINES}/${id}`, dto);
+    const { data } = await clientAxios.patch(
+      `${API_ROUTES.ROUTINES}/${id}`,
+      dto,
+    );
     return data;
   },
 
   async send(id: string) {
-    const { data } = await clientAxios.post(`${API_ROUTES.ROUTINES}/${id}/send`);
+    const { data } = await clientAxios.post(
+      `${API_ROUTES.ROUTINES}/${id}/send`,
+    );
     return data;
   },
 };

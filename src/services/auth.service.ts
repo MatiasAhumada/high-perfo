@@ -1,10 +1,17 @@
 import clientAxios from "@/utils/clientAxios.util";
 import { API_ROUTES } from "@/constants/routes";
-import type { LoginDto, RegisterDto, ChangePasswordDto } from "@/types/auth.types";
+import type {
+  LoginDto,
+  RegisterDto,
+  ChangePasswordDto,
+} from "@/types/auth.types";
 
 export const authService = {
   async login(credentials: LoginDto) {
-    const { data: responseData } = await clientAxios.post(API_ROUTES.AUTH.LOGIN, credentials);
+    const { data: responseData } = await clientAxios.post(
+      API_ROUTES.AUTH.LOGIN,
+      credentials,
+    );
     return responseData;
   },
 

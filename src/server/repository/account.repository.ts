@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 const ACCOUNT_SELECT = {
   id: true,
@@ -17,35 +17,35 @@ const ACCOUNT_SELECT = {
       maxAssessments: true,
     },
   },
-} satisfies Prisma.AccountSelect
+} satisfies Prisma.AccountSelect;
 
 export const accountRepository = {
   async findById(id: string) {
     return prisma.account.findUnique({
       where: { id },
       select: ACCOUNT_SELECT,
-    })
+    });
   },
 
   async findByIdWithPlan(id: string) {
     return prisma.account.findUnique({
       where: { id },
       include: { plan: true },
-    })
+    });
   },
 
   async findAll() {
     return prisma.account.findMany({
       select: ACCOUNT_SELECT,
       orderBy: { createdAt: "desc" },
-    })
+    });
   },
 
   async create(data: Prisma.AccountCreateInput) {
     return prisma.account.create({
       data,
       select: ACCOUNT_SELECT,
-    })
+    });
   },
 
   async update(id: string, data: Prisma.AccountUpdateInput) {
@@ -53,24 +53,24 @@ export const accountRepository = {
       where: { id },
       data,
       select: ACCOUNT_SELECT,
-    })
+    });
   },
 
   async countCoaches(accountId: string) {
     return prisma.user.count({
       where: { accountId, deletedAt: null },
-    })
+    });
   },
 
   async countAthletes(accountId: string) {
     return prisma.athlete.count({
       where: { accountId, deletedAt: null },
-    })
+    });
   },
 
   async countAssessments(accountId: string) {
     return prisma.assessment.count({
       where: { athlete: { accountId } },
-    })
+    });
   },
-}
+};

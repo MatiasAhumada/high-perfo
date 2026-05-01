@@ -12,7 +12,12 @@ interface UsuarioFormProps {
   onSuccess: () => void;
 }
 
-export function UsuarioForm({ cuentas, currentAccountId, isGlobal, onSuccess }: UsuarioFormProps) {
+export function UsuarioForm({
+  cuentas,
+  currentAccountId,
+  isGlobal,
+  onSuccess,
+}: UsuarioFormProps) {
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
@@ -48,9 +53,13 @@ export function UsuarioForm({ cuentas, currentAccountId, isGlobal, onSuccess }: 
           password: form.password,
           role: form.role,
         },
-        form.accountId
+        form.accountId,
       );
-      toastSuccess(isGlobal ? "Usuario creado exitosamente" : "Entrenador agregado exitosamente");
+      toastSuccess(
+        isGlobal
+          ? "Usuario creado exitosamente"
+          : "Entrenador agregado exitosamente",
+      );
       onSuccess();
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } } };
@@ -97,7 +106,9 @@ export function UsuarioForm({ cuentas, currentAccountId, isGlobal, onSuccess }: 
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-on-surface-variant">Confirmar Contraseña</label>
+          <label className="text-xs text-on-surface-variant">
+            Confirmar Contraseña
+          </label>
           <input
             type="password"
             value={form.passwordConfirm}

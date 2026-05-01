@@ -63,7 +63,9 @@ export function CrearVentaForm({ onSuccess }: CrearVentaFormProps) {
     <div className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs text-on-surface-variant">Nombre de la Cuenta</label>
+          <label className="text-xs text-on-surface-variant">
+            Nombre de la Cuenta
+          </label>
           <input
             type="text"
             value={form.accountName}
@@ -109,32 +111,42 @@ export function CrearVentaForm({ onSuccess }: CrearVentaFormProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs text-on-surface-variant">Límite Coaches</label>
+          <label className="text-xs text-on-surface-variant">
+            Límite Coaches
+          </label>
           <input
             type="number"
             min={isOrganization ? 1 : 0}
             max={50}
             value={form.maxCoaches}
-            onChange={(e) => handleChange("maxCoaches", parseInt(e.target.value) || 0)}
+            onChange={(e) =>
+              handleChange("maxCoaches", parseInt(e.target.value) || 0)
+            }
             disabled={!isOrganization}
             className="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2.5 text-on-surface focus:border-on-tertiary-container focus:outline-none transition-colors disabled:opacity-50"
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-on-surface-variant">Límite Atletas</label>
+          <label className="text-xs text-on-surface-variant">
+            Límite Atletas
+          </label>
           <input
             type="number"
             min={1}
             max={500}
             value={form.maxAthletes}
-            onChange={(e) => handleChange("maxAthletes", parseInt(e.target.value) || 1)}
+            onChange={(e) =>
+              handleChange("maxAthletes", parseInt(e.target.value) || 1)
+            }
             className="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2.5 text-on-surface focus:border-on-tertiary-container focus:outline-none transition-colors"
           />
         </div>
       </div>
 
       <div className="border-t border-outline-variant/20 pt-4">
-        <h4 className="text-sm font-display text-on-surface mb-4">Usuario Inicial</h4>
+        <h4 className="text-sm font-display text-on-surface mb-4">
+          Usuario Inicial
+        </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-xs text-on-surface-variant">Nombre</label>
@@ -159,7 +171,9 @@ export function CrearVentaForm({ onSuccess }: CrearVentaFormProps) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           <div className="space-y-2">
-            <label className="text-xs text-on-surface-variant">Contraseña</label>
+            <label className="text-xs text-on-surface-variant">
+              Contraseña
+            </label>
             <input
               type="password"
               value={form.userPassword}
@@ -169,11 +183,15 @@ export function CrearVentaForm({ onSuccess }: CrearVentaFormProps) {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-on-surface-variant">Confirmar Contraseña</label>
+            <label className="text-xs text-on-surface-variant">
+              Confirmar Contraseña
+            </label>
             <input
               type="password"
               value={form.userPasswordConfirm}
-              onChange={(e) => handleChange("userPasswordConfirm", e.target.value)}
+              onChange={(e) =>
+                handleChange("userPasswordConfirm", e.target.value)
+              }
               placeholder="Repetir contraseña"
               className="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2.5 text-on-surface focus:border-on-tertiary-container focus:outline-none transition-colors"
             />
@@ -184,7 +202,13 @@ export function CrearVentaForm({ onSuccess }: CrearVentaFormProps) {
       <div className="flex justify-end gap-3 pt-2">
         <Button
           onClick={handleSubmit}
-          disabled={loading || !form.accountName || !form.userEmail || !form.userName || !form.userPassword}
+          disabled={
+            loading ||
+            !form.accountName ||
+            !form.userEmail ||
+            !form.userName ||
+            !form.userPassword
+          }
           className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display rounded-lg"
         >
           {loading ? "Creando..." : "Crear Venta"}

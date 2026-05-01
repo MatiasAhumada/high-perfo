@@ -28,17 +28,29 @@ export function ForceVelocityPanel({ assessment }: ForceVelocityPanelProps) {
           {f0Metric && (
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/20">
               <span className="w-2 h-2 rounded-full bg-on-tertiary-container" />
-              <span className="text-[10px] text-on-surface-variant/50 uppercase tracking-wider">F0</span>
-              <span className="text-sm font-body text-on-tertiary-container">{f0Metric.rawValue}</span>
-              <span className="text-xs text-on-surface-variant/40">{f0Metric.unit}</span>
+              <span className="text-[10px] text-on-surface-variant/50 uppercase tracking-wider">
+                F0
+              </span>
+              <span className="text-sm font-body text-on-tertiary-container">
+                {f0Metric.rawValue}
+              </span>
+              <span className="text-xs text-on-surface-variant/40">
+                {f0Metric.unit}
+              </span>
             </div>
           )}
           {v0Metric && (
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/20">
               <span className="w-2 h-2 rounded-full bg-slate-400" />
-              <span className="text-[10px] text-on-surface-variant/50 uppercase tracking-wider">V0</span>
-              <span className="text-sm font-body text-slate-300">{v0Metric.rawValue}</span>
-              <span className="text-xs text-on-surface-variant/40">{v0Metric.unit}</span>
+              <span className="text-[10px] text-on-surface-variant/50 uppercase tracking-wider">
+                V0
+              </span>
+              <span className="text-sm font-body text-slate-300">
+                {v0Metric.rawValue}
+              </span>
+              <span className="text-xs text-on-surface-variant/40">
+                {v0Metric.unit}
+              </span>
             </div>
           )}
         </div>

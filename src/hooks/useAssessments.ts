@@ -40,7 +40,9 @@ export function useAssessments(): UseAssessmentsReturn {
   return { assessments, loading, error };
 }
 
-export function useAssessmentByAthlete(athleteId: string): UseAssessmentByAthleteReturn {
+export function useAssessmentByAthlete(
+  athleteId: string,
+): UseAssessmentByAthleteReturn {
   const [assessment, setAssessment] = useState<AssessmentMock | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

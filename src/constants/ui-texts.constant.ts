@@ -161,4 +161,4 @@ export const UI_TEXTS = {
     DATE: "Fecha",
     COACH: "Entrenador",
   },
-} as const
+} as const;
