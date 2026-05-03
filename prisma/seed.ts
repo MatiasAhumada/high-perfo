@@ -10,6 +10,7 @@ const SEED_IDS = {
   PLAN_SOLO: "seed-plan-001",
   PLAN_CLUB: "seed-plan-002",
   PLAN_ELITE: "seed-plan-003",
+  ACCOUNT_SUPERADMIN: "seed-account-superadmin",
   ACCOUNT_LINCE: "seed-account-001",
   ACCOUNT_PERFORMANCE: "seed-account-002",
   ACCOUNT_SOLO_COACH: "seed-account-003",
@@ -20,10 +21,17 @@ const SEED_IDS = {
   USER_PERF_ADMIN: "seed-user-perf-admin",
   USER_PERF_COACH_1: "seed-user-perf-coach1",
   USER_SOLO_COACH: "seed-user-solo-coach",
+  DESIGN_SUPERADMIN: "seed-design-superadmin",
   DESIGN_LINCE: "seed-design-lince",
   DESIGN_PERF: "seed-design-perf",
   DESIGN_SOLO: "seed-design-solo",
 } as const
+
+const SUPERADMIN_ATHLETE_IDS = [
+  "seed-athlete-superadmin-1",
+  "seed-athlete-superadmin-2",
+  "seed-athlete-superadmin-3",
+] as const
 
 const LINCE_ATHLETE_IDS = [
   "seed-athlete-lince-1",
@@ -50,6 +58,12 @@ const SOLO_ATHLETE_IDS = [
 ] as const
 
 const LINCE_RUGBY_POSITIONS = ["1", "2", "3", "4", "6", "9", "10", "15"] as const
+
+const SUPERADMIN_ATHLETES = [
+  { id: SUPERADMIN_ATHLETE_IDS[0], firstName: "Juan", lastName: "Pérez", puesto: "10", birthDate: new Date("2000-05-15") },
+  { id: SUPERADMIN_ATHLETE_IDS[1], firstName: "María", lastName: "González", puesto: "9", birthDate: new Date("1999-08-22") },
+  { id: SUPERADMIN_ATHLETE_IDS[2], firstName: "Carlos", lastName: "Ramírez", puesto: "15", birthDate: new Date("2001-03-10") },
+] as const
 
 const LINCE_ATHLETES = [
   { id: LINCE_ATHLETE_IDS[0], firstName: "Mateo", lastName: "Rossi", puesto: LINCE_RUGBY_POSITIONS[0], birthDate: new Date("1998-03-12") },
@@ -172,6 +186,12 @@ async function seedPlans() {
 
 async function seedAccounts() {
   await prisma.account.upsert({
+    where: { id: SEED_IDS.ACCOUNT_SUPERADMIN },
+    update: { name: "Super Admin Personal", isOrganization: false, planId: SEED_IDS.PLAN_ELITE },
+    create: { id: SEED_IDS.ACCOUNT_SUPERADMIN, name: "Super Admin Personal", isOrganization: false, planId: SEED_IDS.PLAN_ELITE },
+  })
+
+  await prisma.account.upsert({
     where: { id: SEED_IDS.ACCOUNT_LINCE },
     update: { name: "Lince Rugby Club", isOrganization: true, planId: SEED_IDS.PLAN_CLUB },
     create: { id: SEED_IDS.ACCOUNT_LINCE, name: "Lince Rugby Club", isOrganization: true, planId: SEED_IDS.PLAN_CLUB },
@@ -192,7 +212,7 @@ async function seedAccounts() {
 
 async function seedUsers() {
   const users = [
-    { id: SEED_IDS.USER_SUPER_ADMIN, email: "superadmin@highperfo.com", name: "Super Admin", role: Role.SUPER_ADMIN, accountId: SEED_IDS.ACCOUNT_LINCE },
+    { id: SEED_IDS.USER_SUPER_ADMIN, email: "superadmin@highperfo.com", name: "Super Admin", role: Role.SUPER_ADMIN, accountId: SEED_IDS.ACCOUNT_SUPERADMIN },
     { id: SEED_IDS.USER_LINCE_ADMIN, email: "admin@lincerugby.com", name: "Carlos Ruiz", role: Role.ORG_ADMIN, accountId: SEED_IDS.ACCOUNT_LINCE },
     { id: SEED_IDS.USER_LINCE_COACH_1, email: "coach1@lincerugby.com", name: "Martín Herrera", role: Role.COACH, accountId: SEED_IDS.ACCOUNT_LINCE },
     { id: SEED_IDS.USER_LINCE_COACH_2, email: "coach2@lincerugby.com", name: "Pablo Domínguez", role: Role.COACH, accountId: SEED_IDS.ACCOUNT_LINCE },
@@ -214,6 +234,16 @@ async function seedUsers() {
     console.log(`✅ ${user.email.padEnd(30)} | ${user.role.padEnd(12)} | ${user.name}`)
   }
   console.log('━'.repeat(80) + '\n')
+}
+
+async function seedSuperAdminAthletes() {
+  for (const athlete of SUPERADMIN_ATHLETES) {
+    await prisma.athlete.upsert({
+      where: { id: athlete.id },
+      update: { firstName: athlete.firstName, lastName: athlete.lastName, puesto: athlete.puesto, birthDate: athlete.birthDate, accountId: SEED_IDS.ACCOUNT_SUPERADMIN },
+      create: { id: athlete.id, firstName: athlete.firstName, lastName: athlete.lastName, puesto: athlete.puesto, birthDate: athlete.birthDate, accountId: SEED_IDS.ACCOUNT_SUPERADMIN },
+    })
+  }
 }
 
 async function seedLinceAthletes() {
@@ -243,6 +273,49 @@ async function seedSoloAthletes() {
       update: { firstName: athlete.firstName, lastName: athlete.lastName, puesto: athlete.puesto, birthDate: athlete.birthDate, accountId: SEED_IDS.ACCOUNT_SOLO_COACH },
       create: { id: athlete.id, firstName: athlete.firstName, lastName: athlete.lastName, puesto: athlete.puesto, birthDate: athlete.birthDate, accountId: SEED_IDS.ACCOUNT_SOLO_COACH },
     })
+  }
+}
+
+async function seedSuperAdminAssessments() {
+  const assessmentBaseDate = new Date("2025-01-10")
+
+  for (let athleteIndex = 0; athleteIndex < SUPERADMIN_ATHLETES.length; athleteIndex++) {
+    const athlete = SUPERADMIN_ATHLETES[athleteIndex]
+
+    for (let assessmentIndex = 0; assessmentIndex < 2; assessmentIndex++) {
+      const assessmentId = `seed-assess-superadmin-${athleteIndex}-${assessmentIndex}`
+      const assessmentDate = new Date(assessmentBaseDate)
+      assessmentDate.setMonth(assessmentBaseDate.getMonth() + assessmentIndex * 2)
+
+      const jumpValues = getJumpValues(athlete.puesto, assessmentIndex)
+
+      await prisma.assessment.upsert({
+        where: { id: assessmentId },
+        update: {
+          athleteId: athlete.id,
+          coachId: SEED_IDS.USER_SUPER_ADMIN,
+          date: assessmentDate,
+          type: AssessmentType.NEUROMUSCULAR,
+          bodyWeight: 75 + athleteIndex * 4,
+        },
+        create: {
+          id: assessmentId,
+          athleteId: athlete.id,
+          coachId: SEED_IDS.USER_SUPER_ADMIN,
+          date: assessmentDate,
+          type: AssessmentType.NEUROMUSCULAR,
+          bodyWeight: 75 + athleteIndex * 4,
+          results: {
+            create: [
+              { id: `seed-result-superadmin-${athleteIndex}-${assessmentIndex}-sj`, key: "SJ", rawValue: jumpValues.sj, calculatedValue: jumpValues.sj * 0.95 },
+              { id: `seed-result-superadmin-${athleteIndex}-${assessmentIndex}-cmj`, key: "CMJ", rawValue: jumpValues.cmj, calculatedValue: jumpValues.cmj * 0.92 },
+              { id: `seed-result-superadmin-${athleteIndex}-${assessmentIndex}-dj`, key: "DJ", rawValue: jumpValues.dj, calculatedValue: jumpValues.dj * 0.88 },
+              { id: `seed-result-superadmin-${athleteIndex}-${assessmentIndex}-rsi`, key: "RSI", rawValue: 2.0 + assessmentIndex * 0.2, calculatedValue: 2.0 + assessmentIndex * 0.2 },
+            ],
+          },
+        },
+      })
+    }
   }
 }
 
@@ -481,6 +554,23 @@ async function seedPerfToolExecutions() {
   }
 }
 
+async function seedSuperAdminMetricDefinitions() {
+  const definitions = [
+    { id: "seed-metric-superadmin-sj", key: "SJ", label: "Squat Jump", unit: "cm", redZoneLimit: 25, greenZoneLimit: 35 },
+    { id: "seed-metric-superadmin-cmj", key: "CMJ", label: "Countermovement Jump", unit: "cm", redZoneLimit: 30, greenZoneLimit: 40 },
+    { id: "seed-metric-superadmin-dj", key: "DJ", label: "Drop Jump", unit: "cm", redZoneLimit: 28, greenZoneLimit: 38 },
+    { id: "seed-metric-superadmin-rsi", key: "RSI", label: "Reactive Strength Index", unit: "ms/ms", redZoneLimit: 1.5, greenZoneLimit: 2.5 },
+  ]
+
+  for (const definition of definitions) {
+    await prisma.metricDefinition.upsert({
+      where: { id: definition.id },
+      update: { accountId: SEED_IDS.ACCOUNT_SUPERADMIN, key: definition.key, label: definition.label, unit: definition.unit, redZoneLimit: definition.redZoneLimit, greenZoneLimit: definition.greenZoneLimit },
+      create: { id: definition.id, accountId: SEED_IDS.ACCOUNT_SUPERADMIN, key: definition.key, label: definition.label, unit: definition.unit, redZoneLimit: definition.redZoneLimit, greenZoneLimit: definition.greenZoneLimit },
+    })
+  }
+}
+
 async function seedLinceMetricDefinitions() {
   for (const definition of LINCE_METRIC_DEFINITIONS) {
     await prisma.metricDefinition.upsert({
@@ -502,6 +592,31 @@ async function seedPerfMetricDefinitions() {
 }
 
 async function seedDesignConfigs() {
+  await prisma.designConfig.upsert({
+    where: { id: SEED_IDS.DESIGN_SUPERADMIN },
+    update: {
+      accountId: SEED_IDS.ACCOUNT_SUPERADMIN,
+      primaryColor: "#f8171a",
+      surfaceColor: "#101417",
+      surfaceVariant: "#1d2023",
+      textColor: "#e0e2e6",
+      fontFamilyHead: "Space Grotesk",
+      fontFamilyBody: "Manrope",
+      borderRadius: "0.5rem",
+    },
+    create: {
+      id: SEED_IDS.DESIGN_SUPERADMIN,
+      accountId: SEED_IDS.ACCOUNT_SUPERADMIN,
+      primaryColor: "#f8171a",
+      surfaceColor: "#101417",
+      surfaceVariant: "#1d2023",
+      textColor: "#e0e2e6",
+      fontFamilyHead: "Space Grotesk",
+      fontFamilyBody: "Manrope",
+      borderRadius: "0.5rem",
+    },
+  })
+
   await prisma.designConfig.upsert({
     where: { id: SEED_IDS.DESIGN_LINCE },
     update: {
@@ -566,6 +681,9 @@ async function main() {
   console.log("Seeding users...")
   await seedUsers()
 
+  console.log("Seeding Super Admin athletes...")
+  await seedSuperAdminAthletes()
+
   console.log("Seeding Lince athletes...")
   await seedLinceAthletes()
 
@@ -574,6 +692,9 @@ async function main() {
 
   console.log("Seeding Solo Coach athletes...")
   await seedSoloAthletes()
+
+  console.log("Seeding Super Admin assessments...")
+  await seedSuperAdminAssessments()
 
   console.log("Seeding Lince assessments...")
   await seedLinceAssessments()
@@ -598,6 +719,9 @@ async function main() {
 
   console.log("Seeding Performance Lab tool executions...")
   await seedPerfToolExecutions()
+
+  console.log("Seeding Super Admin metric definitions...")
+  await seedSuperAdminMetricDefinitions()
 
   console.log("Seeding Lince metric definitions...")
   await seedLinceMetricDefinitions()

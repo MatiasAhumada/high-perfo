@@ -113,24 +113,36 @@ export function Sidebar() {
 
       {isSuperAdmin && (
         <div className="px-5 mb-4">
-          <div className="flex items-center gap-2 bg-surface-container rounded-lg p-1">
+          <div className="relative flex items-center gap-2 bg-surface-container rounded-lg p-1">
+            <motion.div
+              className="absolute inset-y-1 w-[calc(50%-4px)] bg-on-tertiary-container rounded-md"
+              initial={false}
+              animate={{
+                x: isAdminView ? "calc(100% + 8px)" : 0,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 30,
+              }}
+            />
             <button
-              onClick={() => !isAdminView && toggleView()}
+              onClick={() => isAdminView && toggleView()}
               className={cn(
-                "flex-1 py-2 px-3 rounded-md text-xs font-display font-semibold transition-all",
+                "relative z-10 flex-1 py-2 px-3 rounded-md text-xs font-display font-semibold transition-colors duration-200",
                 !isAdminView
-                  ? "bg-on-tertiary-container text-on-surface"
+                  ? "text-on-surface"
                   : "text-on-surface-variant hover:text-on-surface",
               )}
             >
               Coach
             </button>
             <button
-              onClick={() => isAdminView && toggleView()}
+              onClick={() => !isAdminView && toggleView()}
               className={cn(
-                "flex-1 py-2 px-3 rounded-md text-xs font-display font-semibold transition-all",
+                "relative z-10 flex-1 py-2 px-3 rounded-md text-xs font-display font-semibold transition-colors duration-200",
                 isAdminView
-                  ? "bg-on-tertiary-container text-on-surface"
+                  ? "text-on-surface"
                   : "text-on-surface-variant hover:text-on-surface",
               )}
             >
