@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useCurrentUser } from "@/hooks";
 import { userClient, accountClient } from "@/services/account.service";
 import { DataTable } from "@/components/common";
@@ -40,19 +40,34 @@ export function UsuariosView() {
   const [search, setSearch] = useState("");
   const [modalUsuarioOpen, setModalUsuarioOpen] = useState(false);
   const [modalCuentaOpen, setModalCuentaOpen] = useState(false);
+  const hasLoadedRef = useRef(false);
+  const loadingRef = useRef(false);
+  const cuentasLoadedRef = useRef(false);
 
-  const loadData = useCallback(
-    async (searchTerm?: string) => {
+  useEffect(() => {
+    if (userLoading) return;
+    if (hasLoadedRef.current) return;
+    if (!accountId && !isSuperAdmin) return;
+
+    hasLoadedRef.current = true;
+
+    const fetchData = async () => {
+      if (loadingRef.current) return;
+      loadingRef.current = true;
+
       try {
         setLoading(true);
         let usuariosData: Usuario[];
 
         if (isSuperAdmin && isAdminView) {
-          usuariosData = await userClient.getGlobal(searchTerm);
-          const cuentasData = await accountClient.getAll();
-          setCuentas(cuentasData);
+          usuariosData = await userClient.getGlobal();
+          if (!cuentasLoadedRef.current) {
+            const cuentasData = await accountClient.getAll();
+            setCuentas(cuentasData);
+            cuentasLoadedRef.current = true;
+          }
         } else {
-          usuariosData = await userClient.getAll(accountId!, searchTerm);
+          usuariosData = await userClient.getAll(accountId!);
         }
 
         setUsuarios(usuariosData);
@@ -60,22 +75,40 @@ export function UsuariosView() {
         console.error("Error loading data:", error);
       } finally {
         setLoading(false);
+        loadingRef.current = false;
       }
-    },
-    [isSuperAdmin, isAdminView, accountId],
-  );
+    };
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+    fetchData();
+  }, [userLoading, accountId, isSuperAdmin, isAdminView]);
 
-  const handleSearch = useCallback(
-    (value: string) => {
-      setSearch(value);
-      loadData(value);
-    },
-    [loadData],
-  );
+  const loadData = async (searchTerm?: string) => {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
+
+    try {
+      setLoading(true);
+      let usuariosData: Usuario[];
+
+      if (isSuperAdmin && isAdminView) {
+        usuariosData = await userClient.getGlobal(searchTerm);
+      } else {
+        usuariosData = await userClient.getAll(accountId!, searchTerm);
+      }
+
+      setUsuarios(usuariosData);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setLoading(false);
+      loadingRef.current = false;
+    }
+  };
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    loadData(value);
+  };
 
   const handleUsuarioCreado = () => {
     setModalUsuarioOpen(false);

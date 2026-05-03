@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Role } from "@prisma/client";
 
 const STORAGE_KEY = "superAdminView";
@@ -29,17 +29,20 @@ export function useCurrentUser() {
     localStorage.setItem(STORAGE_KEY, value ? "admin" : "coach");
   };
 
-  return {
-    user: session?.user,
-    role: session?.user?.role as Role | undefined,
-    accountId: session?.user?.accountId,
-    isLoading: status === "loading",
-    isAuthenticated: status === "authenticated",
-    isSuperAdmin: session?.user?.role === "SUPER_ADMIN",
-    isOrgAdmin: session?.user?.role === "ORG_ADMIN",
-    isCoach: session?.user?.role === "COACH",
-    isAdminView: isAdminView,
-    setAdminView,
-    toggleView,
-  };
+  return useMemo(
+    () => ({
+      user: session?.user,
+      role: session?.user?.role as Role | undefined,
+      accountId: session?.user?.accountId,
+      isLoading: status === "loading",
+      isAuthenticated: status === "authenticated",
+      isSuperAdmin: session?.user?.role === "SUPER_ADMIN",
+      isOrgAdmin: session?.user?.role === "ORG_ADMIN",
+      isCoach: session?.user?.role === "COACH",
+      isAdminView: isAdminView,
+      setAdminView,
+      toggleView,
+    }),
+    [session, status, isAdminView],
+  );
 }

@@ -2,11 +2,88 @@ export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   ATHLETES: "/atletas",
+  EXERCISES: "/ejercicios",
+  TESTS: "/tests",
   ROUTINES: "/rutinas",
   TOOLS: "/herramientas",
+  ACCOUNTS: "/cuentas",
+  PLANS: "/planes",
+  METRICS: "/metricas",
   SETTINGS: "/ajustes",
   COACHES: "/coaches",
 } as const;
+
+export const PUBLIC_ROUTES = ["/login"];
+
+export const ROLE_ROUTES = {
+  SUPER_ADMIN: [
+    "/",
+    "/atletas",
+    "/ejercicios",
+    "/tests",
+    "/rutinas",
+    "/herramientas",
+    "/cuentas",
+    "/planes",
+    "/metricas",
+  ],
+  ORG_ADMIN: ["/", "/coaches", "/atletas", "/ajustes"],
+  COACH: ["/", "/atletas", "/rutinas", "/herramientas"],
+};
+
+export const SIDEBAR_ITEMS_SUPER_ADMIN_COACH = [
+  {
+    key: "athletes",
+    label: "Atletas",
+    path: "/atletas",
+    icon: "DirectionsRunIcon",
+  },
+  {
+    key: "exercises",
+    label: "Ejercicios",
+    path: "/ejercicios",
+    icon: "FitnessIcon",
+  },
+  {
+    key: "tests",
+    label: "Tests",
+    path: "/tests",
+    icon: "TestIcon",
+  },
+  {
+    key: "routines",
+    label: "Rutinas",
+    path: "/rutinas",
+    icon: "RoutineIcon",
+  },
+  {
+    key: "tools",
+    label: "Herramientas",
+    path: "/herramientas",
+    icon: "ToolboxIcon",
+  },
+] as const;
+
+export const SIDEBAR_ITEMS_SUPER_ADMIN_ADMIN = [
+  {
+    key: "accounts",
+    label: "Cuentas",
+    path: "/cuentas",
+    icon: "AccountIcon",
+  },
+  {
+    key: "plans",
+    label: "Planes",
+    path: "/planes",
+    icon: "PlanIcon",
+  },
+  {
+    key: "metrics",
+    label: "Métricas",
+    path: "/metricas",
+    icon: "MetricIcon",
+  },
+] as const;
 
 export const SIDEBAR_ITEMS = [
   {
