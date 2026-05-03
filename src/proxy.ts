@@ -1,22 +1,9 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { PUBLIC_ROUTES, ROLE_ROUTES } from "@/constants/routes";
 
-const PUBLIC_ROUTES = ["/login"];
 const API_AUTH_PREFIX = "/api/auth";
-
-const ROLE_ROUTES = {
-  SUPER_ADMIN: [
-    "/",
-    "/coaches",
-    "/atletas",
-    "/rutinas",
-    "/herramientas",
-    "/ajustes",
-  ],
-  ORG_ADMIN: ["/", "/coaches", "/atletas", "/ajustes"],
-  COACH: ["/", "/atletas", "/rutinas", "/herramientas"],
-} as const;
 
 export default auth(async (req) => {
   const { nextUrl, auth: session } = req;
@@ -52,9 +39,6 @@ export default auth(async (req) => {
 
     const isRootPath = pathname === "/";
     if (isRootPath) {
-      if (userRole === "ORG_ADMIN") {
-        return NextResponse.redirect(new URL("/coaches", nextUrl));
-      }
       return NextResponse.redirect(new URL("/atletas", nextUrl));
     }
 
@@ -64,9 +48,6 @@ export default auth(async (req) => {
     );
 
     if (!hasAccess) {
-      if (userRole === "ORG_ADMIN") {
-        return NextResponse.redirect(new URL("/coaches", nextUrl));
-      }
       return NextResponse.redirect(new URL("/atletas", nextUrl));
     }
   }

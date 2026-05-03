@@ -2,27 +2,29 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { signOut } from "next-auth/react";
 import {
   DashboardSquare01Icon,
   RunningShoesIcon,
   GymnasticIcon,
   ToolsIcon,
   Setting06Icon,
-  Download01Icon,
   Menu01Icon,
   Cancel01Icon,
-  Settings02Icon,
   UserGroupIcon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
+  Building06Icon,
+  CreditCardIcon,
+  ChartIcon,
+  Dumbbell01Icon,
+  ClipboardIcon,
+  Logout01Icon,
 } from "hugeicons-react";
 import { UI_TEXTS } from "@/constants/ui-texts.constant";
 import {
-  SIDEBAR_ITEMS,
-  SIDEBAR_ITEMS_ADMIN,
-  SIDEBAR_ITEMS_SUPER_ADMIN,
+  SIDEBAR_ITEMS_SUPER_ADMIN_COACH,
+  SIDEBAR_ITEMS_SUPER_ADMIN_ADMIN,
 } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks";
@@ -33,10 +35,15 @@ const ICON_MAP: Record<
 > = {
   DashboardIcon: DashboardSquare01Icon,
   DirectionsRunIcon: RunningShoesIcon,
-  FitnessIcon: GymnasticIcon,
+  FitnessIcon: Dumbbell01Icon,
   ToolboxIcon: ToolsIcon,
   SettingsIcon: Setting06Icon,
   UserGroupIcon: UserGroupIcon,
+  AccountIcon: Building06Icon,
+  PlanIcon: CreditCardIcon,
+  MetricIcon: ChartIcon,
+  TestIcon: ClipboardIcon,
+  RoutineIcon: GymnasticIcon,
 };
 
 function SidebarItem({
@@ -77,19 +84,22 @@ function SidebarItem({
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { role } = useCurrentUser();
+  const { user, isSuperAdmin, isAdminView, toggleView } = useCurrentUser();
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
-  const items =
-    role === "SUPER_ADMIN"
-      ? SIDEBAR_ITEMS_SUPER_ADMIN
-      : role === "ORG_ADMIN"
-        ? SIDEBAR_ITEMS_ADMIN
-        : SIDEBAR_ITEMS;
+  const items = isSuperAdmin
+    ? isAdminView
+      ? SIDEBAR_ITEMS_SUPER_ADMIN_ADMIN
+      : SIDEBAR_ITEMS_SUPER_ADMIN_COACH
+    : [];
 
-  const branding = role === "ORG_ADMIN" ? "Administrador" : "Coach";
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/login");
+  };
 
   const sidebarContent = (
     <div className="flex flex-col h-full bg-surface-container-lowest border-r border-outline-variant/30">
@@ -100,9 +110,48 @@ export function Sidebar() {
           </h2>
         </div>
       </div>
-      <p className="text-on-surface-variant text-xs font-body px-5 mb-2">
-        {branding}
-      </p>
+
+      {isSuperAdmin && (
+        <div className="px-5 mb-4">
+          <div className="relative flex items-center gap-2 bg-surface-container rounded-lg p-1">
+            <motion.div
+              className="absolute inset-y-1 w-[calc(50%-4px)] bg-on-tertiary-container rounded-md"
+              initial={false}
+              animate={{
+                x: isAdminView ? "calc(100% + 8px)" : 0,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 30,
+              }}
+            />
+            <button
+              onClick={() => isAdminView && toggleView()}
+              className={cn(
+                "relative z-10 flex-1 py-2 px-3 rounded-md text-xs font-display font-semibold transition-colors duration-200",
+                !isAdminView
+                  ? "text-on-surface"
+                  : "text-on-surface-variant hover:text-on-surface",
+              )}
+            >
+              Coach
+            </button>
+            <button
+              onClick={() => !isAdminView && toggleView()}
+              className={cn(
+                "relative z-10 flex-1 py-2 px-3 rounded-md text-xs font-display font-semibold transition-colors duration-200",
+                isAdminView
+                  ? "text-on-surface"
+                  : "text-on-surface-variant hover:text-on-surface",
+              )}
+            >
+              Admin
+            </button>
+          </div>
+        </div>
+      )}
+
       <nav className="flex-1 flex flex-col gap-1 overflow-y-auto py-2">
         {items.map((item) => {
           const isActive = pathname.startsWith(item.path);
@@ -118,14 +167,37 @@ export function Sidebar() {
           );
         })}
       </nav>
+
       <div className="px-5 pb-6 pt-4 border-t border-outline-variant/20">
-        <button className="w-full bg-on-tertiary-container text-on-surface font-display text-label-caps py-3 rounded-lg transition-all hover:bg-on-tertiary-container/90 flex items-center justify-center gap-2 shadow-lg shadow-on-tertiary-container/20 active:scale-[0.98]">
-          <Download01Icon size={16} />
-          <span className="hidden sm:inline">
-            {UI_TEXTS.DASHBOARD.EXPORT_KPIS}
-          </span>
-          <span className="sm:hidden">Export</span>
-        </button>
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0">
+              <span className="font-display font-semibold text-xs text-on-surface-variant">
+                {user?.name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .slice(0, 2)
+                  .toUpperCase()}
+              </span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-display font-medium text-on-surface truncate">
+                {user?.name}
+              </p>
+              <p className="text-xs text-on-surface-variant">
+                {user?.role === "SUPER_ADMIN" ? "Super Admin" : user?.role}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-lg hover:bg-surface-container-high transition-colors shrink-0"
+            title="Cerrar sesión"
+          >
+            <Logout01Icon size={18} className="text-on-surface-variant" />
+          </button>
+        </div>
       </div>
     </div>
   );
