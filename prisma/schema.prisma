@@ -35,6 +35,24 @@ enum ToolKey {
   ASIMETRIA
 }
 
+enum WeekType {
+  MAINTENANCE
+  SPORT_SPECIFIC
+}
+
+enum SessionStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum SportType {
+  RUGBY
+  FUTBOL
+  BASQUET
+  TENIS
+}
+
 model Plan {
   id              String   @id @default(uuid())
   name            String
@@ -60,6 +78,8 @@ model Account {
   templates         RoutineTemplate[]
   designConfig      DesignConfig?
   metricDefinitions MetricDefinition[]
+  exerciseLibrary   ExerciseLibrary[]
+  trainingWeeks     TrainingWeek[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -76,9 +96,11 @@ model User {
   accountId String
   account   Account @relation(fields: [accountId], references: [id])
 
-  createdTemplates    RoutineTemplate[]
+  createdTemplates     RoutineTemplate[]
   assessmentsPerformed Assessment[]
-  assignedRoutines    AssignedRoutine[]
+  assignedRoutines     AssignedRoutine[]
+  createdWeeks         TrainingWeek[]
+  trainingSessions     TrainingSession[]
 
   deletedAt  DateTime?
   createdAt  DateTime @default(now())
@@ -110,18 +132,21 @@ model Athlete {
   lastName  String
   puesto    String?
   birthDate DateTime?
+  sport     SportType?
 
   accountId String
   account   Account @relation(fields: [accountId], references: [id])
 
   assessments      Assessment[]
   assignedRoutines AssignedRoutine[]
+  trainingWeeks    TrainingWeek[]
 
   deletedAt  DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   @@index([accountId])
+  @@index([sport])
 }
 
 model Assessment {
@@ -237,4 +262,108 @@ model MetricDefinition {
   greenZoneLimit  Float?
 
   @@unique([accountId, key])
+}
+
+model ExerciseLibrary {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  category    String?
+  toolKey     ToolKey?
+  sport       SportType?
+  
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  sessionExercises SessionExercise[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([accountId])
+  @@index([toolKey])
+  @@index([sport])
+}
+
+model TrainingWeek {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  weekType    WeekType @default(MAINTENANCE)
+  sport       SportType?
+  weekNumber  Int?
+  isClosed    Boolean  @default(false)
+  isTemplate  Boolean  @default(false)
+  
+  athleteId String?
+  athlete   Athlete? @relation(fields: [athleteId], references: [id])
+  
+  coachId String
+  coach   User @relation(fields: [coachId], references: [id])
+  
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  sessions TrainingSession[]
+
+  startDate DateTime
+  endDate   DateTime?
+  closedAt  DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([accountId])
+  @@index([athleteId])
+  @@index([weekType])
+  @@index([isTemplate])
+  @@index([sport])
+}
+
+model TrainingSession {
+  id          String        @id @default(uuid())
+  dayNumber   Int
+  sessionName String?
+  notes       String?
+  status      SessionStatus @default(PENDING)
+  
+  weekId String
+  week   TrainingWeek @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  
+  coachId String
+  coach   User @relation(fields: [coachId], references: [id])
+
+  exercises SessionExercise[]
+
+  sessionDate  DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([weekId])
+  @@index([status])
+}
+
+model SessionExercise {
+  id       String  @id @default(uuid())
+  order    Int
+  sets     Int
+  reps     Int
+  weight   Float?
+  rest     Int?
+  notes    String?
+  
+  sessionId String
+  session   TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  exerciseId String?
+  exercise   ExerciseLibrary? @relation(fields: [exerciseId], references: [id])
+  
+  customExerciseName String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([exerciseId])
 }
