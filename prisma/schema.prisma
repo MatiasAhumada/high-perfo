@@ -76,9 +76,10 @@ model Account {
   users             User[]
   athletes          Athlete[]
   templates         RoutineTemplate[]
+  exercises         ExerciseLibrary[]
+  toolTemplates     ToolTemplate[]
   designConfig      DesignConfig?
   metricDefinitions MetricDefinition[]
-  exerciseLibrary   ExerciseLibrary[]
   trainingWeeks     TrainingWeek[]
 
   createdAt DateTime @default(now())
@@ -97,6 +98,8 @@ model User {
   account   Account @relation(fields: [accountId], references: [id])
 
   createdTemplates     RoutineTemplate[]
+  createdExercises     ExerciseLibrary[]
+  createdToolTemplates ToolTemplate[]
   assessmentsPerformed Assessment[]
   assignedRoutines     AssignedRoutine[]
   createdWeeks         TrainingWeek[]
@@ -184,9 +187,10 @@ model RoutineTemplate {
   id          String  @id @default(uuid())
   name        String
   description String?
+  isGlobal    Boolean @default(false)
 
-  accountId String
-  account   Account @relation(fields: [accountId], references: [id])
+  accountId String?
+  account   Account? @relation(fields: [accountId], references: [id])
 
   creatorId String
   creator   User @relation(fields: [creatorId], references: [id])
@@ -198,6 +202,7 @@ model RoutineTemplate {
   updatedAt DateTime @updatedAt
 
   @@index([accountId])
+  @@index([isGlobal])
 }
 
 model TemplateExercise {
@@ -269,13 +274,21 @@ model ExerciseLibrary {
   name        String
   description String?
   category    String?
+  muscleGroup String?
+  equipment   String?
+  videoUrl    String?
   toolKey     ToolKey?
   sport       SportType?
+  isGlobal    Boolean @default(false)
   
-  accountId String
-  account   Account @relation(fields: [accountId], references: [id])
+  accountId String?
+  account   Account? @relation(fields: [accountId], references: [id])
 
-  sessionExercises SessionExercise[]
+  creatorId String
+  creator   User @relation(fields: [creatorId], references: [id])
+
+  sessionExercises     SessionExercise[]
+  toolTemplateExercises ToolTemplateExercise[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -283,6 +296,7 @@ model ExerciseLibrary {
   @@index([accountId])
   @@index([toolKey])
   @@index([sport])
+  @@index([isGlobal])
 }
 
 model TrainingWeek {
@@ -365,5 +379,50 @@ model SessionExercise {
   updatedAt DateTime @updatedAt
 
   @@index([sessionId])
+  @@index([exerciseId])
+}
+
+model ToolTemplate {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  toolKey     ToolKey
+  isGlobal    Boolean @default(false)
+  
+  accountId String?
+  account   Account? @relation(fields: [accountId], references: [id])
+
+  creatorId String
+  creator   User @relation(fields: [creatorId], references: [id])
+
+  exercises ToolTemplateExercise[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([accountId])
+  @@index([toolKey])
+  @@index([isGlobal])
+}
+
+model ToolTemplateExercise {
+  id               String       @id @default(uuid())
+  toolTemplateId   String
+  toolTemplate     ToolTemplate @relation(fields: [toolTemplateId], references: [id], onDelete: Cascade)
+
+  exerciseId String?
+  exercise   ExerciseLibrary? @relation(fields: [exerciseId], references: [id])
+
+  customExerciseName String?
+  order              Int
+  sets               Int?
+  reps               Int?
+  duration           Int?
+  rest               Int?
+  notes              String?
+
+  createdAt DateTime @default(now())
+
+  @@index([toolTemplateId])
   @@index([exerciseId])
 }

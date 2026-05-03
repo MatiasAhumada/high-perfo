@@ -1,35 +1,86 @@
 "use client";
 
-import { ToolsCatalog } from "@/components/modules/tools";
-import { useTools } from "@/hooks";
-import { UI_TEXTS } from "@/constants/ui-texts.constant";
+import { useState } from "react";
+import { AddCircleIcon } from "hugeicons-react";
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/common";
+import { StatusBadge } from "@/components/common";
+
+interface ToolTemplate {
+  id: string;
+  name: string;
+  toolKey: string;
+  exerciseCount: number;
+  isGlobal: boolean;
+  createdBy: string;
+}
 
 export default function HerramientasPage() {
-  const { tools, loading, toggleTool } = useTools();
+  const [search, setSearch] = useState("");
+  const [tools] = useState<ToolTemplate[]>([]);
+
+  const columns = [
+    {
+      key: "name",
+      label: "Nombre",
+      render: (tool: ToolTemplate) => (
+        <span className="font-display font-medium text-sm">{tool.name}</span>
+      ),
+    },
+    {
+      key: "toolKey",
+      label: "Tipo",
+      render: (tool: ToolTemplate) => (
+        <span className="text-sm text-on-surface-variant">{tool.toolKey}</span>
+      ),
+    },
+    {
+      key: "exerciseCount",
+      label: "Ejercicios",
+      render: (tool: ToolTemplate) => (
+        <span className="text-sm text-on-surface-variant">
+          {tool.exerciseCount} ejercicios
+        </span>
+      ),
+    },
+    {
+      key: "isGlobal",
+      label: "Alcance",
+      render: (tool: ToolTemplate) => (
+        <StatusBadge
+          variant={tool.isGlobal ? "active" : "inactive"}
+          label={tool.isGlobal ? "Global" : "Personal"}
+        />
+      ),
+    },
+    {
+      key: "createdBy",
+      label: "Creado por",
+      render: (tool: ToolTemplate) => (
+        <span className="text-xs text-on-surface-variant">{tool.createdBy}</span>
+      ),
+    },
+  ];
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      <div>
-        <h2 className="text-xl sm:text-2xl font-display text-on-surface">
-          {UI_TEXTS.TOOLS.TITLE}
-        </h2>
-        <p className="text-sm text-on-surface-variant/50 mt-1 hidden sm:block">
-          {UI_TEXTS.TOOLS.SUBTITLE}
-        </p>
-      </div>
-
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className="h-44 sm:h-48 rounded-xl bg-surface-container border border-outline-variant/30 animate-pulse"
-            />
-          ))}
-        </div>
-      ) : (
-        <ToolsCatalog tools={tools} onToggle={toggleTool} />
-      )}
+      <DataTable
+        title="Herramientas"
+        subtitle="Plantillas de tests y planillas con ejercicios predefinidos"
+        columns={columns}
+        data={tools}
+        keyExtractor={(tool) => tool.id}
+        loading={false}
+        searchPlaceholder="Buscar herramienta..."
+        onSearch={setSearch}
+        totalLabel={`${tools.length} herramientas`}
+        actions={
+          <Button className="bg-on-tertiary-container text-on-surface hover:bg-on-tertiary-container/90 font-display gap-1.5 rounded-lg text-sm">
+            <AddCircleIcon size={16} />
+            <span className="hidden sm:inline">Nueva Herramienta</span>
+          </Button>
+        }
+      />
     </div>
   );
 }
